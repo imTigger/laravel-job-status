@@ -12,9 +12,11 @@ trait Trackable
         $this->update(['progress_max' => $value]);
     }
 
-    protected function setProgressNow(int $value)
+    protected function setProgressNow(int $value, int $updateEvery = 1)
     {
-        $this->update(['progress_now' => $value]);
+        if ($value % $updateEvery == 0) {
+            $this->update(['progress_now' => $value]);
+        }
     }
 
     protected function setInput(array $value)
