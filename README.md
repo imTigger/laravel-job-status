@@ -110,24 +110,23 @@ $this->setOutput(array $v); // Store output into database (Typically the run res
 $job->getJobStatusId(); // Return the primary key of JobStatus (To retrieve status later)
 
 // JobStatus fields
-$jobStatus = JobStatus::find($jobStatusId);
-$jobStatus->job_id; // String
-$jobStatus->type; // String
-$jobStatus->queue; // String
-$jobStatus->attempts; // Integer
-$jobStatus->progress_now; // Integer
-$jobStatus->progress_max; // Integer
-$jobStatus->input;  // Array
-$jobStatus->output; // Array
-$jobStatus->created_at; // Carbon object
-$jobStatus->updated_at; // Carbon Object
-$jobStatus->started_at; // Carbon object
-$jobStatus->finished_at; // Carbon object
+var_dump($jobStatus->job_id); // String
+var_dump($jobStatus->type); // String
+var_dump($jobStatus->queue); // String
+var_dump($jobStatus->attempts); // Integer
+var_dump($jobStatus->progress_now); // Integer
+var_dump($jobStatus->progress_max); // Integer
+var_dump($jobStatus->input);  // Array
+var_dump($jobStatus->output); // Array
+var_dump($jobStatus->created_at); // Carbon object
+var_dump($jobStatus->updated_at); // Carbon Object
+var_dump($jobStatus->started_at); // Carbon object
+var_dump($jobStatus->finished_at); // Carbon object
 
 // JobStatus generated fields
-$jobStatus->progress_percentage; // Double, 0~100
-$jobStatus->is_ended; // Boolean
-$jobStatus->is_executing; // Boolean
-$jobStatus->is_failed; // Boolean
-$jobStatus->is_finished; // Boolean
+var_dump($jobStatus->progress_percentage); // Double, 0~100
+var_dump($jobStatus->is_ended); // Boolean
+var_dump($jobStatus->is_executing); // Boolean
+var_dump($jobStatus->is_failed); // Boolean
+var_dump($jobStatus->is_finished); // Boolean
 ```
