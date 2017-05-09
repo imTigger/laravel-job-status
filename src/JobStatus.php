@@ -47,11 +47,11 @@ class JobStatus extends Model
 
     /* Accessor */
     public function getInputAttribute($value) {
-        return json_decode($value);
+        return json_decode($value, true);
     }
 
     public function getOutputAttribute($value) {
-        return json_decode($value);
+        return json_decode($value, true);
     }
 
     public function getProgressPercentageAttribute() {
