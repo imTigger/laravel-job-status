@@ -2,20 +2,33 @@
 
 Add ability to track Job progress and result after dispatched to Queue.
 
-## Installation
-
-### Requirements
+## Requirements
 
 - PHP >= 5.6.4
 - Laravel >= 5.3
 
-### Composer
+## Installation
 
 This plugin can only be installed from [Composer](https://getcomposer.org/).
 
 Run the following command:
 ```
 $ composer require imtigger/laravel-job-status
+```
+
+Add the following to your `config/app.php`:
+
+```php
+'providers' => [
+    ...
+    Imtigger\LaravelJobStatus\LaravelJobStatusServiceProvider::class,
+]
+```
+
+And run:
+
+```bash
+php artisan migrate
 ```
 
 ### Usage
