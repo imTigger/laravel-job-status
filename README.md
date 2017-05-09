@@ -110,23 +110,24 @@ $this->setOutput(array $v); // Store output into database (Typically the run res
 $job->getJobStatusId(); // Return the primary key of JobStatus (To retrieve status later)
 
 // JobStatus fields
-var_dump($jobStatus->job_id); // String
-var_dump($jobStatus->type); // String
-var_dump($jobStatus->queue); // String
-var_dump($jobStatus->attempts); // Integer
-var_dump($jobStatus->progress_now); // Integer
-var_dump($jobStatus->progress_max); // Integer
-var_dump($jobStatus->input);  // Array
-var_dump($jobStatus->output); // Array
-var_dump($jobStatus->created_at); // Carbon object
-var_dump($jobStatus->updated_at); // Carbon Object
-var_dump($jobStatus->started_at); // Carbon object
-var_dump($jobStatus->finished_at); // Carbon object
+var_dump($jobStatus->job_id);                 // String
+var_dump($jobStatus->type);                   // String
+var_dump($jobStatus->queue);                  // String
+var_dump($jobStatus->status);                 // String [queued|executing|finished|failed]
+var_dump($jobStatus->attempts);               // Integer
+var_dump($jobStatus->progress_now);           // Integer
+var_dump($jobStatus->progress_max);           // Integer
+var_dump($jobStatus->input);                  // Array
+var_dump($jobStatus->output);                 // Array
+var_dump($jobStatus->created_at);             // Carbon object
+var_dump($jobStatus->updated_at);             // Carbon object
+var_dump($jobStatus->started_at);             // Carbon object
+var_dump($jobStatus->finished_at);            // Carbon object
 
 // JobStatus generated fields
-var_dump($jobStatus->progress_percentage); // Double, 0~100
-var_dump($jobStatus->is_ended); // Boolean
-var_dump($jobStatus->is_executing); // Boolean
-var_dump($jobStatus->is_failed); // Boolean
-var_dump($jobStatus->is_finished); // Boolean
+var_dump($jobStatus->progress_percentage);    // Double [0-100], useful for displaying progress bar
+var_dump($jobStatus->is_ended);               // Boolean, true if status == finished || status == failed
+var_dump($jobStatus->is_executing);           // Boolean, true if status == executing
+var_dump($jobStatus->is_failed);              // Boolean, true if status == failed
+var_dump($jobStatus->is_finished);            // Boolean, true if status == finished
 ```
