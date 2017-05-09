@@ -54,6 +54,10 @@ class JobStatus extends Model
         return json_decode($value);
     }
 
+    public function getProgressPercentageAttribute() {
+        return $this->progress_max != 0 ? round(100 * $this->progress_now / $this->progress_max) : 0;
+    }
+    
     public function getIsEndedAttribute() {
         return in_array($this->status, ['failed', 'finished']);
     }
