@@ -89,11 +89,12 @@ $jobStatus->progress_max; // Integer
 $jobStatus->input;  // Array
 $jobStatus->output; // Array
 $jobStatus->created_at; // Carbon object
+$jobStatus->updated_at; // Carbon Object
 $jobStatus->started_at; // Carbon object
 $jobStatus->finished_at; // Carbon object
 
 // Generated fields
-$jobStatus->progress_percentage; // Double
+$jobStatus->progress_percentage; // Double, 0~100
 $jobStatus->is_ended; // Boolean
 $jobStatus->is_executing; // Boolean
 $jobStatus->is_failed; // Boolean

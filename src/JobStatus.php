@@ -42,7 +42,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class JobStatus extends Model
 {
-    public $timestamps = false;
+    public $dates = ['started_at', 'finished_at', 'created_at', 'updated_at'];
     protected $guarded = [];
 
     /* Accessor */

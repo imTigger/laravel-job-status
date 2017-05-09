@@ -23,7 +23,7 @@ class CreateJobStatusesTable extends Migration
             $table->string('status', 16)->default('queued')->index();
             $table->longText('input')->nullable();
             $table->longText('output')->nullable();
-            $table->timestamp('created_at');
+            $table->timestamps();
             $table->timestamp('started_at')->nullable();
             $table->timestamp('finished_at')->nullable();
         });
