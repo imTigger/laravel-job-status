@@ -2,8 +2,6 @@
 
 namespace Imtigger\LaravelJobStatus;
 
-use Imtigger\LaravelJobStatus\JobStatus;
-
 trait Trackable
 {
     /** @var int $statusId */

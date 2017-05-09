@@ -1,7 +1,7 @@
 <?php
+
 namespace Imtigger\LaravelJobStatus;
 
-use App\Models\JobStatus;
 use Carbon\Carbon;
 use Illuminate\Contracts\Queue\Job;
 use Illuminate\Queue\Events\JobExceptionOccurred;
@@ -14,10 +14,10 @@ use Log;
 
 class LaravelJobStatusServiceProvider extends ServiceProvider
 {
-public function boot()
+    public function boot()
     {
         $this->loadMigrationsFrom(__DIR__ . '/migrations');
-        
+
         // Add Event listeners
         app(QueueManager::class)->before(function (JobProcessing $event) {
             $this->updateJobStatus($event->job, [
@@ -51,7 +51,8 @@ public function boot()
         });
     }
 
-    private function updateJobStatus(Job $job, array $data) {
+    private function updateJobStatus(Job $job, array $data)
+    {
         try {
             $payload = $job->payload();
             $jobStatus = unserialize($payload['data']['command']);
