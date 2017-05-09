@@ -99,16 +99,16 @@ $jobStatus = JobStatus::find($jobStatusId);
 ```php
 <?php
 // Job protected methods
-$this->prepareStatus();                        // Must be called in constructor before any other methods
-$this->setProgressMax(int $v);                 // Update the max number of progress
-$this->setProgressNow(int $v);                 // Update the current number progress
-$this->setProgressNow(int $v, int $every);     // Update the current number progress only if $v % $every == 0 (To reduce database write)
-$this->setInput(array $v);                     // Store input into database
-$this->setOutput(array $v);                    // Store output into database (Typically the run result)
+$this->prepareStatus();                       // Must be called in constructor before any other methods
+$this->setProgressMax(int $v);                // Update the max number of progress
+$this->setProgressNow(int $v);                // Update the current number progress
+$this->setProgressNow(int $v, int $every);    // Update the current number progress only if $v % $every == 0 (Reduce database write)
+$this->setInput(array $v);                    // Store input into database
+$this->setOutput(array $v);                   // Store output into database (Typically the run result)
 
 
 // Job public methods
-$job->getJobStatusId(); // Return the primary key of JobStatus (To retrieve status later)
+$job->getJobStatusId();                       // Return the primary key of JobStatus (To retrieve status later)
 
 // JobStatus fields
 var_dump($jobStatus->job_id);                 // String
