@@ -29,7 +29,8 @@ trait Trackable
         $this->update(['output' => $value]);
     }
 
-    protected function update(array $data) {
+    protected function update(array $data)
+    {
         $task = JobStatus::find($this->statusId);
 
         if ($task != null) {
@@ -37,7 +38,8 @@ trait Trackable
         }
     }
 
-    protected function prepareStatus() {
+    protected function prepareStatus()
+    {
         $status = JobStatus::create([
             'type' => static::class
         ]);

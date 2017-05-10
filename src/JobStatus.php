@@ -46,40 +46,49 @@ class JobStatus extends Model
     protected $guarded = [];
 
     /* Accessor */
-    public function getInputAttribute($value) {
+    public function getInputAttribute($value)
+    {
         return json_decode($value, true);
     }
 
-    public function getOutputAttribute($value) {
+    public function getOutputAttribute($value)
+    {
         return json_decode($value, true);
     }
 
-    public function getProgressPercentageAttribute() {
+    public function getProgressPercentageAttribute()
+    {
         return $this->progress_max != 0 ? round(100 * $this->progress_now / $this->progress_max) : 0;
     }
     
-    public function getIsEndedAttribute() {
+    public function getIsEndedAttribute()
+    {
         return in_array($this->status, ['failed', 'finished']);
     }
 
-    public function getIsFinishedAttribute() {
+    public function getIsFinishedAttribute()
+    {
         return in_array($this->status, ['finished']);
     }
 
-    public function getIsFailedAttribute() {
+    public function getIsFailedAttribute()
+    {
         return in_array($this->status, ['failed']);
     }
     
-    public function getIsExecutingAttribute() {
+    public function getIsExecutingAttribute()
+    {
         return in_array($this->status, ['executing']);
     }
 
     /* Mutator */
-    public function setInputAttribute($value) {
+    public function setInputAttribute($value)
+    {
         $this->attributes['input'] = json_encode($value);
     }
 
-    public function setOutputAttribute($value) {
+    public function setOutputAttribute($value)
+    {
         $this->attributes['output'] = json_encode($value);
     }
 }

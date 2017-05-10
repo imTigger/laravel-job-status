@@ -64,5 +64,4 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
             Log::error($e->getMessage());
         }
     }
-
 }
