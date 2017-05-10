@@ -1,6 +1,12 @@
 # Laravel Job Status
 
-Add ability to track Job progress and result after dispatched to Queue.
+Laravel package to add ability to track `Job` progress, status and result dispatched to `Queue`.
+
+- Queue name, attempts, status and created/updated/started/finished timestamp.
+- Progress update, with arbitrary current/max value and percentage auto calculated
+- Handles failed job with exception message
+- Custom input/output
+- Native Eloquent model `JobStatus`
 
 ## Requirements
 
@@ -13,7 +19,7 @@ This plugin can only be installed from [Composer](https://getcomposer.org/).
 
 Run the following command:
 ```
-$ composer require imtigger/laravel-job-status
+composer require imtigger/laravel-job-status
 ```
 
 Add the following to your `config/app.php`:
@@ -33,7 +39,7 @@ php artisan migrate
 
 ### Usage
 
-In your Job, use `Trackable` trait and call `$this->prepareStatus()` in constructor.
+In your `Job`, use `Trackable` trait and call `$this->prepareStatus()` in constructor.
 
 ```php
 <?php
@@ -77,7 +83,7 @@ class TrackableJob implements ShouldQueue
 
 ```
 
-In your Job dispatcher:
+In your Job dispatcher, call `$job->getJobStatusId()` to get `$jobStatusId`:
 
 ```php
 <?php
@@ -87,7 +93,7 @@ $this->dispatch($job);
 $jobStatusId = $job->getJobStatusId();
 ```
 
-Once you have jobStatusId, you can show job status, progress and output to user.
+`$jobStatusId` can be used elsewhere to retrieve job status, progress and output.
 
 ```php
 <?php
@@ -119,7 +125,7 @@ var_dump($jobStatus->attempts);               // Integer
 var_dump($jobStatus->progress_now);           // Integer
 var_dump($jobStatus->progress_max);           // Integer
 var_dump($jobStatus->input);                  // Array
-var_dump($jobStatus->output);                 // Array
+var_dump($jobStatus->output);                 // Array, ['message' => $exception->getMessage()] if job failed
 var_dump($jobStatus->created_at);             // Carbon object
 var_dump($jobStatus->updated_at);             // Carbon object
 var_dump($jobStatus->started_at);             // Carbon object
