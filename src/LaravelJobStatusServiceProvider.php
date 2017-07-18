@@ -9,8 +9,8 @@ use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\QueueManager;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
-use Log;
 
 class LaravelJobStatusServiceProvider extends ServiceProvider
 {
@@ -22,6 +22,7 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
         app(QueueManager::class)->before(function (JobProcessing $event) {
             $this->updateJobStatus($event->job, [
                 'status' => 'executing',
+                'job_id' => $event->job->getJobId(),
                 'attempts' => $event->job->attempts(),
                 'queue' => $event->job->getQueue(),
                 'started_at' => Carbon::now()
@@ -60,7 +61,7 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
             if (!is_callable([$jobStatus, 'getJobStatusId'])) {
                 return;
             }
-            
+
             $jobStatusId = $jobStatus->getJobStatusId();
 
             $jobStatus = JobStatus::where('id', '=', $jobStatusId);
