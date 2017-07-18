@@ -7,6 +7,7 @@ Laravel package to add ability to track `Job` progress, status and result dispat
 - Handles failed job with exception message
 - Custom input/output
 - Native Eloquent model `JobStatus`
+- Support all drivers included in Laravel (null/sync/database/beanstalkd/redis/sqs)
 
 ## Requirements
 
@@ -117,7 +118,7 @@ $this->setOutput(array $v);                   // Store output into database (Typ
 $job->getJobStatusId();                       // Return the primary key of JobStatus (To retrieve status later)
 
 // JobStatus fields
-var_dump($jobStatus->job_id);                 // String
+var_dump($jobStatus->job_id);                 // String (Result varys with driver, see note)
 var_dump($jobStatus->type);                   // String
 var_dump($jobStatus->queue);                  // String
 var_dump($jobStatus->status);                 // String [queued|executing|finished|failed]
@@ -138,3 +139,16 @@ var_dump($jobStatus->is_executing);           // Boolean, true if status == exec
 var_dump($jobStatus->is_failed);              // Boolean, true if status == failed
 var_dump($jobStatus->is_finished);            // Boolean, true if status == finished
 ```
+
+# Note 
+
+`$jobStatus->job_id` result varys with driver
+
+| Driver     | job_id
+| ---------- | --------
+| null       | NULL (Job not run at all!)
+| sync       | empty string
+| database   | integer
+| beanstalkd | integer 
+| redis      | string(32)
+| sqs        | GUID 
