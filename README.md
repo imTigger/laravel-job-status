@@ -118,7 +118,7 @@ $this->setOutput(array $v);                   // Store output into database (Typ
 $job->getJobStatusId();                       // Return the primary key of JobStatus (To retrieve status later)
 
 // JobStatus fields
-var_dump($jobStatus->job_id);                 // String (Result varys with driver, see note)
+var_dump($jobStatus->job_id);                 // String (Result varies with driver, see note)
 var_dump($jobStatus->type);                   // String
 var_dump($jobStatus->queue);                  // String
 var_dump($jobStatus->status);                 // String [queued|executing|finished|failed]
