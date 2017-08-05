@@ -23,6 +23,12 @@ Run the following command:
 composer require imtigger/laravel-job-status
 ```
 
+### Laravel 5.5
+
+You don't have to do anything else, this package autoloads the Service Provider, using the new Auto-Discovery feature.
+
+### Laravel 5.4 or lower
+
 Add the following to your `config/app.php`:
 
 ```php
