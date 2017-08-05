@@ -23,7 +23,7 @@
                 "Imtigger\\LaravelJobStatus\\LaravelJobStatusServiceProvider"
             ]
         }
-    }
+    },
     "autoload": {
         "psr-4": {
             "Imtigger\\LaravelJobStatus\\": "src"
