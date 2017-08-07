@@ -25,7 +25,11 @@ composer require imtigger/laravel-job-status
 
 ### Laravel 5.5
 
-You don't have to do anything else, this package autoloads the Service Provider, using the new Auto-Discovery feature.
+Just run the migration script. You don't have to do anything else, this package autoloads the Service Provider, using the new Auto-Discovery feature.
+
+```bash
+php artisan migrate
+```
 
 ### Laravel 5.4 or lower
 
