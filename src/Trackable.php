@@ -7,12 +7,12 @@ trait Trackable
     /** @var int $statusId */
     protected $statusId;
 
-    protected function setProgressMax(int $value)
+    protected function setProgressMax($value)
     {
         $this->update(['progress_max' => $value]);
     }
 
-    protected function setProgressNow(int $value, int $every = 1)
+    protected function setProgressNow($value, $every = 1)
     {
         if ($value % $every == 0) {
             $this->update(['progress_now' => $value]);
