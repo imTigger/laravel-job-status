@@ -18,6 +18,10 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__ . '/migrations');
 
+        $this->publishes([
+            __DIR__ . '/config/job-status.php' => app_path('../config/job-status.php')
+        ], 'configs');        
+
         // Add Event listeners
         app(QueueManager::class)->before(function (JobProcessing $event) {
             $this->updateJobStatus($event->job, [
