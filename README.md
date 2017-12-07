@@ -23,15 +23,7 @@ Run the following command:
 composer require imtigger/laravel-job-status
 ```
 
-### Laravel 5.5
-
-Just run the migration script. You don't have to do anything else, this package autoloads the Service Provider, using the new Auto-Discovery feature.
-
-```bash
-php artisan migrate
-```
-
-### Laravel 5.4 or lower
+#### 1. Add Service Provider (Laravel < 5.5)
 
 Add the following to your `config/app.php`:
 
@@ -42,7 +34,13 @@ Add the following to your `config/app.php`:
 ]
 ```
 
-And run:
+#### 2. Publish migration and config
+
+```bash
+php artisan vendor:publish --provider=\Imtigger\LaravelJobStatus\LaravelJobStatusServiceProvider
+```
+
+#### 3. Migrate Database
 
 ```bash
 php artisan migrate
@@ -116,13 +114,14 @@ $jobStatus = JobStatus::find($jobStatusId);
 ```php
 <?php
 // Job protected methods
-$this->prepareStatus();                       // Must be called in constructor before any other methods
-$this->setProgressMax(int $v);                // Update the max number of progress
-$this->setProgressNow(int $v);                // Update the current number progress
-$this->setProgressNow(int $v, int $every);    // Update the current number progress only if $v % $every == 0 (Reduce database write)
-$this->setInput(array $v);                    // Store input into database
-$this->setOutput(array $v);                   // Store output into database (Typically the run result)
-
+$this->prepareStatus();                           // Must be called in constructor before any other methods
+$this->setProgressMax(int $v);                    // Update the max number of progress
+$this->setProgressNow(int $v);                    // Update the current number progress
+$this->setProgressNow(int $v, int $every);        // Update the current number progress, write to database only when $v % $every == 0
+$this->incrementProgress(int $offset)             // Increase current number progress by $offset
+$this->incrementProgress(int $offset, int $every) // Increase current number progress by $offset, write to database only when $v % $every == 0
+$this->setInput(array $v);                        // Store input into database
+$this->setOutput(array $v);                       // Store output into database (Typically the run result)
 
 // Job public methods
 $job->getJobStatusId();                       // Return the primary key of JobStatus (To retrieve status later)
