@@ -16,7 +16,9 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/migrations');
+        $this->publishes([
+            __DIR__ . '/migrations/2017_05_01_000000_create_job_statuses_table.php' => app_path('../database/migrations/2017_05_01_000000_create_job_statuses_table.php')
+        ], 'forms');
 
         $this->publishes([
             __DIR__ . '/config/job-status.php' => app_path('../config/job-status.php')
