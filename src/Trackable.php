@@ -6,6 +6,7 @@ trait Trackable
 {
     /** @var int $statusId */
     protected $statusId;
+    protected $progressNow = 0;
 
     protected function setProgressMax($value)
     {
@@ -17,6 +18,13 @@ trait Trackable
         if ($value % $every == 0) {
             $this->update(['progress_now' => $value]);
         }
+        $this->progressNow = $value;
+    }
+    
+    protected function incrementProgress($offset = 1, $every = 1)
+    {
+        $value = $this->progressNow + $offset;
+        $this->setProgressNow($value, $every);
     }
 
     protected function setInput(array $value)
