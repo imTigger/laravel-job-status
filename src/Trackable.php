@@ -47,6 +47,7 @@ trait Trackable
         if ($status != null) {
             return $status->update($data);
         }
+        return null;
     }
 
     protected function prepareStatus()

@@ -3,7 +3,6 @@
 namespace Imtigger\LaravelJobStatus;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Imtigger\LaravelJobStatus
@@ -25,23 +24,28 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read mixed $is_executing
  * @property-read mixed $is_failed
  * @property-read mixed $is_finished
- * @method static \Illuminate\Database\Query\Builder|\App\Models\JobStatus whereAttempts($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\JobStatus whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\JobStatus whereFinishedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\JobStatus whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\JobStatus whereInput($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\JobStatus whereJobId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\JobStatus whereOutput($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\JobStatus whereProgressMax($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\JobStatus whereProgressNow($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\JobStatus whereQueue($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\JobStatus whereStartedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\JobStatus whereStatus($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\JobStatus whereType($value)
+ * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereAttempts($value)
+ * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereFinishedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereInput($value)
+ * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereJobId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereOutput($value)
+ * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereProgressMax($value)
+ * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereProgressNow($value)
+ * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereQueue($value)
+ * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereStartedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereStatus($value)
+ * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereType($value)
  * @mixin \Eloquent
  */
 class JobStatus extends Model
 {
+    const STATUS_QUEUED = 'queued';
+    const STATUS_EXECUTING = 'executing';
+    const STATUS_FINISHED = 'finished';
+    const STATUS_FAILED = 'failed';
+
     public $dates = ['started_at', 'finished_at', 'created_at', 'updated_at'];
     protected $guarded = [];
 
@@ -63,22 +67,27 @@ class JobStatus extends Model
     
     public function getIsEndedAttribute()
     {
-        return in_array($this->status, ['failed', 'finished']);
+        return in_array($this->status, [self::STATUS_FAILED, self::STATUS_FINISHED]);
     }
 
     public function getIsFinishedAttribute()
     {
-        return in_array($this->status, ['finished']);
+        return $this->status === self::STATUS_FINISHED;
     }
 
     public function getIsFailedAttribute()
     {
-        return in_array($this->status, ['failed']);
+        return $this->status === self::STATUS_FAILED;
     }
     
     public function getIsExecutingAttribute()
     {
-        return in_array($this->status, ['executing']);
+        return $this->status === self::STATUS_EXECUTING;
+    }
+
+    public function getIsQueuedAttribute()
+    {
+        return $this->status === self::STATUS_QUEUED;
     }
 
     /* Mutator */
@@ -90,5 +99,15 @@ class JobStatus extends Model
     public function setOutputAttribute($value)
     {
         $this->attributes['output'] = json_encode($value);
+    }
+
+    public static function getAllowedStatuses()
+    {
+        return [
+            self::STATUS_QUEUED,
+            self::STATUS_EXECUTING,
+            self::STATUS_FINISHED,
+            self::STATUS_FAILED
+        ];
     }
 }
