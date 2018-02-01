@@ -39,19 +39,22 @@ trait Trackable
 
     protected function update(array $data)
     {
-        $entityClass = config('job-status.class', JobStatus::class);
-
+        /** @var JobStatus $entityClass */
+        $entityClass = app()->getAlias(JobStatus::class);
+        /** @var JobStatus $status */
         $status = $entityClass::find($this->statusId);
 
         if ($status != null) {
             return $status->update($data);
         }
+        return null;
     }
 
     protected function prepareStatus()
     {
-        $entityClass = config('job-status.class', JobStatus::class);
-
+        /** @var JobStatus $entityClass */
+        $entityClass = app()->getAlias(JobStatus::class);
+        /** @var JobStatus $status */
         $status = $entityClass::create([
             'type' => static::class
         ]);

@@ -16,18 +16,12 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->publishes([
-            __DIR__ . '/migrations/2017_05_01_000000_create_job_statuses_table.php' => app_path('../database/migrations/2017_05_01_000000_create_job_statuses_table.php')
-        ], 'forms');
-
-        $this->publishes([
-            __DIR__ . '/config/job-status.php' => app_path('../config/job-status.php')
-        ], 'configs');        
+        $this->loadMigrationsFrom(__DIR__ . '/migrations');
 
         // Add Event listeners
         app(QueueManager::class)->before(function (JobProcessing $event) {
             $this->updateJobStatus($event->job, [
-                'status' => 'executing',
+                'status' => JobStatus::STATUS_EXECUTING,
                 'job_id' => $event->job->getJobId(),
                 'attempts' => $event->job->attempts(),
                 'queue' => $event->job->getQueue(),
@@ -36,21 +30,21 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
         });
         app(QueueManager::class)->after(function (JobProcessed $event) {
             $this->updateJobStatus($event->job, [
-                'status' => 'finished',
+                'status' => JobStatus::STATUS_FINISHED,
                 'attempts' => $event->job->attempts(),
                 'finished_at' => Carbon::now()
             ]);
         });
         app(QueueManager::class)->failing(function (JobFailed $event) {
             $this->updateJobStatus($event->job, [
-                'status' => 'failed',
+                'status' => JobStatus::STATUS_FAILED,
                 'attempts' => $event->job->attempts(),
                 'finished_at' => Carbon::now()
             ]);
         });
         app(QueueManager::class)->exceptionOccurred(function (JobExceptionOccurred $event) {
             $this->updateJobStatus($event->job, [
-                'status' => 'failed',
+                'status' => JobStatus::STATUS_FAILED,
                 'attempts' => $event->job->attempts(),
                 'finished_at' => Carbon::now(),
                 'output' => json_encode(['message' => $event->exception->getMessage()])
@@ -65,7 +59,7 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
             $jobStatus = unserialize($payload['data']['command']);
             
             if (!is_callable([$jobStatus, 'getJobStatusId'])) {
-                return;
+                return null;
             }
 
             $jobStatusId = $jobStatus->getJobStatusId();
@@ -74,6 +68,7 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
             return $jobStatus->update($data);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
+            return null;
         }
     }
 }
