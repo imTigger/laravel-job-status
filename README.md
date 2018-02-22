@@ -37,7 +37,7 @@ Add the following to your `config/app.php`:
 #### 2. Publish migration and config
 
 ```bash
-php artisan vendor:publish --provider=\Imtigger\LaravelJobStatus\LaravelJobStatusServiceProvider
+php artisan vendor:publish --provider="Imtigger\LaravelJobStatus\LaravelJobStatusServiceProvider"
 ```
 
 #### 3. Migrate Database
