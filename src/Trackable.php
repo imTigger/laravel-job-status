@@ -52,14 +52,14 @@ trait Trackable
         return null;
     }
 
-    protected function prepareStatus()
+    protected function prepareStatus(array $data = [])
     {
         /** @var JobStatus $entityClass */
         $entityClass = app()->getAlias(JobStatus::class);
+
+        $data = array_merge(["type" => static::class], $data);
         /** @var JobStatus $status */
-        $status = $entityClass::create([
-            'type' => static::class
-        ]);
+        $status = $entityClass::create($data);
 
         $this->statusId = $status->id;
     }
