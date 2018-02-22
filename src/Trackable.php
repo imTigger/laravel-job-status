@@ -50,17 +50,17 @@ trait Trackable
         return null;
     }
 
-    protected function prepareStatus()
-    {
-        /** @var JobStatus $entityClass */
-        $entityClass = app()->getAlias(JobStatus::class);
-        /** @var JobStatus $status */
-        $status = $entityClass::create([
-            'type' => static::class
-        ]);
-        
-        $this->statusId = $status->id;
-    }
+	protected function prepareStatus(array $data = [])
+	{
+		/** @var JobStatus $entityClass */
+		$entityClass = app()->getAlias(JobStatus::class);
+
+		$data = array_merge(["type" => static::class], $data);
+		/** @var JobStatus $status */
+		$status = $entityClass::create($data);
+
+		$this->statusId = $status->id;
+	}
 
     public function getJobStatusId()
     {
