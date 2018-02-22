@@ -7,20 +7,22 @@ trait Trackable
     /** @var int $statusId */
     protected $statusId;
     protected $progressNow = 0;
+    protected $progressMax = 0;
 
     protected function setProgressMax($value)
     {
         $this->update(['progress_max' => $value]);
+        $this->progressMax = $value;
     }
 
     protected function setProgressNow($value, $every = 1)
     {
-        if ($value % $every == 0) {
+        if ($value % $every == 0 || $value == $this->progressMax) {
             $this->update(['progress_now' => $value]);
         }
         $this->progressNow = $value;
     }
-    
+
     protected function incrementProgress($offset = 1, $every = 1)
     {
         $value = $this->progressNow + $offset;
@@ -50,17 +52,17 @@ trait Trackable
         return null;
     }
 
-	protected function prepareStatus(array $data = [])
-	{
-		/** @var JobStatus $entityClass */
-		$entityClass = app()->getAlias(JobStatus::class);
+    protected function prepareStatus(array $data = [])
+    {
+        /** @var JobStatus $entityClass */
+        $entityClass = app()->getAlias(JobStatus::class);
 
-		$data = array_merge(["type" => static::class], $data);
-		/** @var JobStatus $status */
-		$status = $entityClass::create($data);
+        $data = array_merge(["type" => static::class], $data);
+        /** @var JobStatus $status */
+        $status = $entityClass::create($data);
 
-		$this->statusId = $status->id;
-	}
+        $this->statusId = $status->id;
+    }
 
     public function getJobStatusId()
     {
