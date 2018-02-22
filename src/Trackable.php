@@ -7,20 +7,22 @@ trait Trackable
     /** @var int $statusId */
     protected $statusId;
     protected $progressNow = 0;
+    protected $progressMax = 0;
 
     protected function setProgressMax($value)
     {
         $this->update(['progress_max' => $value]);
+        $this->progressMax = $value;
     }
 
     protected function setProgressNow($value, $every = 1)
     {
-        if ($value % $every == 0) {
+        if ($value % $every == 0 || $value == $this->progressMax) {
             $this->update(['progress_now' => $value]);
         }
         $this->progressNow = $value;
     }
-    
+
     protected function incrementProgress($offset = 1, $every = 1)
     {
         $value = $this->progressNow + $offset;
@@ -58,7 +60,7 @@ trait Trackable
         $status = $entityClass::create([
             'type' => static::class
         ]);
-        
+
         $this->statusId = $status->id;
     }
 
