@@ -57,11 +57,16 @@ trait Trackable
         /** @var JobStatus $entityClass */
         $entityClass = app()->getAlias(JobStatus::class);
 
-        $data = array_merge(["type" => static::class], $data);
+        $data = array_merge(["type" => $this->getDisplayName()], $data);
         /** @var JobStatus $status */
         $status = $entityClass::create($data);
 
         $this->statusId = $status->id;
+    }
+
+    protected function getDisplayName()
+    {
+        return method_exists($this, 'displayName') ? $this->displayName() : static::class;
     }
 
     public function getJobStatusId()
