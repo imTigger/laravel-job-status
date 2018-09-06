@@ -9,6 +9,12 @@ Laravel package to add ability to track `Job` progress, status and result dispat
 - Native Eloquent model `JobStatus`
 - Support all drivers included in Laravel (null/sync/database/beanstalkd/redis/sqs)
 
+- This package intentionally do not provide any UI for displaying Job progress.
+
+  If you have such need, please refer to https://github.com/imTigger/laravel-job-status-progress-view  
+  
+  or make your own implementation using `JobStatus` model
+
 ## Requirements
 
 - PHP >= 5.6.4
