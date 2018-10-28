@@ -1,5 +1,10 @@
 # Laravel Job Status
 
+[![Latest Stable Version](https://poser.pugx.org/imTigger/laravel-job-status/v/stable)](https://packagist.org/packages/imTigger/laravel-job-status)
+[![Total Downloads](https://poser.pugx.org/imTigger/laravel-job-status/downloads)](https://packagist.org/packages/imTigger/laravel-job-status)
+[![License](https://poser.pugx.org/imTigger/laravel-job-status/license)](https://packagist.org/packages/imTigger/laravel-job-status)
+
+
 Laravel package to add ability to track `Job` progress, status and result dispatched to `Queue`.
 
 - Queue name, attempts, status and created/updated/started/finished timestamp.
