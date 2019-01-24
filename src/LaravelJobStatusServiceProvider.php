@@ -18,6 +18,10 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__ . '/migrations');
 
+        $this->publishes([
+            __DIR__ . '/migrations/' => database_path('migrations')
+        ], 'migrations');
+
 	    /** @var JobStatus $entityClass */
 	    $entityClass = app()->getAlias(JobStatus::class);
 
@@ -60,7 +64,7 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
         try {
             $payload = $job->payload();
             $jobStatus = unserialize($payload['data']['command']);
-            
+
             if (!is_callable([$jobStatus, 'getJobStatusId'])) {
                 return null;
             }
