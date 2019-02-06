@@ -36,11 +36,19 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
             ]);
         });
         app(QueueManager::class)->after(function (JobProcessed $event) use($entityClass){
-            $this->updateJobStatus($event->job, [
+            
+            $jobStatus = [
                 'status' => $entityClass::STATUS_FINISHED,
-                'attempts' => $event->job->attempts(),
                 'finished_at' => Carbon::now()
-            ]);
+            ];
+            
+            // Try to get attempts so we can update the count - this will fail 
+            // for some drivers since they delete the job before we can check
+            try {
+                $jobStatus['attempts'] = $event->job->attempts();
+            } catch (\Exception $e) { }
+            
+            $this->updateJobStatus($event->job, $jobStatus);
         });
         app(QueueManager::class)->failing(function (JobFailed $event) use ($entityClass){
             $this->updateJobStatus($event->job, [
