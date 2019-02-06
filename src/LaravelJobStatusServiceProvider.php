@@ -30,37 +30,25 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
             $this->updateJobStatus($event->job, [
                 'status' => $entityClass::STATUS_EXECUTING,
                 'job_id' => $event->job->getJobId(),
-                'attempts' => $event->job->attempts(),
                 'queue' => $event->job->getQueue(),
                 'started_at' => Carbon::now()
             ]);
         });
         app(QueueManager::class)->after(function (JobProcessed $event) use($entityClass){
-            
-            $jobStatus = [
+            $this->updateJobStatus($event->job, [
                 'status' => $entityClass::STATUS_FINISHED,
                 'finished_at' => Carbon::now()
-            ];
-            
-            // Try to get attempts so we can update the count - this will fail 
-            // for some drivers since they delete the job before we can check
-            try {
-                $jobStatus['attempts'] = $event->job->attempts();
-            } catch (\Exception $e) { }
-            
-            $this->updateJobStatus($event->job, $jobStatus);
+            ]);
         });
         app(QueueManager::class)->failing(function (JobFailed $event) use ($entityClass){
             $this->updateJobStatus($event->job, [
                 'status' => $entityClass::STATUS_FAILED,
-                'attempts' => $event->job->attempts(),
                 'finished_at' => Carbon::now()
             ]);
         });
         app(QueueManager::class)->exceptionOccurred(function (JobExceptionOccurred $event) use($entityClass) {
             $this->updateJobStatus($event->job, [
                 'status' => $entityClass::STATUS_FAILED,
-                'attempts' => $event->job->attempts(),
                 'finished_at' => Carbon::now(),
                 'output' => json_encode(['message' => $event->exception->getMessage()])
             ]);
@@ -79,10 +67,16 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
 
             $jobStatusId = $jobStatus->getJobStatusId();
 
-	        /** @var JobStatus $entityClass */
-	        $entityClass = app()->getAlias(JobStatus::class);
+  	        /** @var JobStatus $entityClass */
+  	        $entityClass = app()->getAlias(JobStatus::class);
 
-	        $jobStatus = $entityClass::where('id', '=', $jobStatusId);
+  	        $jobStatus = $entityClass::where('id', '=', $jobStatusId);
+
+            // Try to add attempts to the data we're saving - this will fail 
+            // for some drivers since they delete the job before we can check
+            try {
+                $data['attempts'] = $job->attempts();
+            } catch (\Exception $e) { }
 
             return $jobStatus->update($data);
         } catch (\Exception $e) {
