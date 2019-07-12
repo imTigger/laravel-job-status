@@ -49,6 +49,7 @@ trait Trackable
         if ($status != null) {
             return $status->update($data);
         }
+
         return null;
     }
 
@@ -57,7 +58,7 @@ trait Trackable
         /** @var JobStatus $entityClass */
         $entityClass = app(config('job-status.model'));
 
-        $data = array_merge(["type" => $this->getDisplayName()], $data);
+        $data = array_merge(['type' => $this->getDisplayName()], $data);
         /** @var JobStatus $status */
         $status = $entityClass::create($data);
 
@@ -72,7 +73,7 @@ trait Trackable
     public function getJobStatusId()
     {
         if ($this->statusId == null) {
-            throw new \Exception("Failed to get jobStatusId, have you called \$this->prepareStatus() in __construct() of Job?");
+            throw new \Exception('Failed to get jobStatusId, have you called $this->prepareStatus() in __construct() of Job?');
         }
 
         return $this->statusId;

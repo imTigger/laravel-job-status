@@ -2,13 +2,11 @@
 
 namespace Imtigger\LaravelJobStatus\Tests;
 
-
 use Imtigger\LaravelJobStatus\JobStatus;
 use Orchestra\Testbench\TestCase;
 
 class JobStatusTest extends TestCase
 {
-
     public function testGetAndSetsInputAttribute()
     {
         $jobStatus = new JobStatus();
