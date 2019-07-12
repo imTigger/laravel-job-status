@@ -42,7 +42,7 @@ trait Trackable
     protected function update(array $data)
     {
         /** @var JobStatus $entityClass */
-        $entityClass = app()->getAlias(JobStatus::class);
+        $entityClass = app(config('job-status.model'));
         /** @var JobStatus $status */
         $status = $entityClass::find($this->statusId);
 
@@ -55,13 +55,13 @@ trait Trackable
     protected function prepareStatus(array $data = [])
     {
         /** @var JobStatus $entityClass */
-        $entityClass = app()->getAlias(JobStatus::class);
+        $entityClass = app(config('job-status.model'));
 
         $data = array_merge(["type" => $this->getDisplayName()], $data);
         /** @var JobStatus $status */
         $status = $entityClass::create($data);
 
-        $this->statusId = $status->id;
+        $this->statusId = $status->getKey();
     }
 
     protected function getDisplayName()

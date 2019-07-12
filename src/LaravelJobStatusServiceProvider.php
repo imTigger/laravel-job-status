@@ -18,12 +18,18 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__ . '/migrations');
 
+        $this->mergeConfigFrom(__DIR__ . '/../config/job-status.php', 'job-status');
+
         $this->publishes([
-            __DIR__ . '/migrations/' => database_path('migrations')
+            __DIR__ . '/migrations/' => database_path('migrations'),
         ], 'migrations');
 
+        $this->publishes([
+            __DIR__ . '/../config/' => config_path(),
+        ], 'config');
+
 	    /** @var JobStatus $entityClass */
-	    $entityClass = app()->getAlias(JobStatus::class);
+	    $entityClass = app(config('job-status.model'));
 
         // Add Event listeners
         app(QueueManager::class)->before(function (JobProcessing $event) use ($entityClass){
@@ -68,7 +74,7 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
             $jobStatusId = $jobStatus->getJobStatusId();
 
   	        /** @var JobStatus $entityClass */
-  	        $entityClass = app()->getAlias(JobStatus::class);
+  	        $entityClass = app(config('job-status.model'));
 
   	        $jobStatus = $entityClass::where('id', '=', $jobStatusId);
 
