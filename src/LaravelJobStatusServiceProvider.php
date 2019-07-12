@@ -76,7 +76,7 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
   	        /** @var JobStatus $entityClass */
   	        $entityClass = app(config('job-status.model'));
 
-            $jobStatus = $entityClass::where('id', '=', $jobStatusId);
+            $jobStatus = $entityClass::query()->where('id', '=', $jobStatusId);
 
             // Try to add attempts to the data we're saving - this will fail
             // for some drivers since they delete the job before we can check

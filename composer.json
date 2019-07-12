@@ -19,7 +19,8 @@
         "illuminate/database": ">=5.3",
         "illuminate/queue": ">=5.3",
         "illuminate/support": ">=5.3",
-        "nesbot/carbon": ">=1.21"
+        "nesbot/carbon": ">=1.21",
+      "ext-json": "*"
     },
     "require-dev": {
         "phpunit/phpunit": ">=5.7",
