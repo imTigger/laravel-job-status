@@ -107,10 +107,17 @@ In your Job dispatcher, call `$job->getJobStatusId()` to get `$jobStatusId`:
 
 ```php
 <?php
-$job = new TrackableJob([]);
-$this->dispatch($job);
 
-$jobStatusId = $job->getJobStatusId();
+class YourController {
+    use DispatchesJobs;
+
+    function go() {
+        $job = new TrackableJob([]);
+        $this->dispatch($job);
+
+        $jobStatusId = $job->getJobStatusId();
+    }
+}
 ```
 
 `$jobStatusId` can be used elsewhere to retrieve job status, progress and output.
@@ -119,6 +126,22 @@ $jobStatusId = $job->getJobStatusId();
 <?php
 $jobStatus = JobStatus::find($jobStatusId);
 ```
+### Common Caveat
+
+Laravel provide many ways to dispatch Jobs. Not all methods return your Job object, for example:
+
+```php
+<?php
+YourJob::dispatch(); // Returns PendingDispatch instead of YourJob object, leaving no way to retrive `$job->getJobStatusId();`
+```
+
+Workarounds: Create your own key
+
+1. Create migration adding extra key to job_statuses table.
+
+2. In your job, generate your own unique key and pass into `prepareStatus();`, `$this->prepareStatus(['key' => $params['key']]);`
+
+3. Find JobStatus another way: `$jobStatus = JobStatus::whereKey($key)->firstOrFail();`
 
 ## Documentations
 
