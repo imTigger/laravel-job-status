@@ -28,8 +28,8 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
             __DIR__ . '/../config/' => config_path(),
         ], 'config');
 
-	    /** @var JobStatus $entityClass */
-	    $entityClass = app(config('job-status.model'));
+        /** @var JobStatus $entityClass */
+        $entityClass = app(config('job-status.model'));
 
         // Add Event listeners
         app(QueueManager::class)->before(function (JobProcessing $event) use ($entityClass) {
@@ -73,8 +73,8 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
 
             $jobStatusId = $jobStatus->getJobStatusId();
 
-  	        /** @var JobStatus $entityClass */
-  	        $entityClass = app(config('job-status.model'));
+            /** @var JobStatus $entityClass */
+            $entityClass = app(config('job-status.model'));
 
             $jobStatus = $entityClass::query()->where('id', '=', $jobStatusId);
 
