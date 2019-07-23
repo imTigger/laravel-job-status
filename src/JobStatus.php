@@ -5,38 +5,38 @@ namespace Imtigger\LaravelJobStatus;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Imtigger\LaravelJobStatus
+ * Imtigger\LaravelJobStatus.
  *
- * @property int $id
+ * @property int    $id
  * @property string $job_id
  * @property string $type
  * @property string $queue
- * @property int $attempts
- * @property int $progress_now
- * @property int $progress_max
+ * @property int    $attempts
+ * @property int    $progress_now
+ * @property int    $progress_max
  * @property string $status
  * @property string $input
  * @property string $output
  * @property string $created_at
  * @property string $started_at
  * @property string $finished_at
- * @property-read mixed $is_ended
- * @property-read mixed $is_executing
- * @property-read mixed $is_failed
- * @property-read mixed $is_finished
- * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereAttempts($value)
- * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereFinishedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereInput($value)
- * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereJobId($value)
- * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereOutput($value)
- * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereProgressMax($value)
- * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereProgressNow($value)
- * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereQueue($value)
- * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereStartedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereStatus($value)
- * @method static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereType($value)
+ * @property mixed  $is_ended
+ * @property mixed  $is_executing
+ * @property mixed  $is_failed
+ * @property mixed  $is_finished
+ * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereAttempts($value)
+ * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereCreatedAt($value)
+ * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereFinishedAt($value)
+ * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereId($value)
+ * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereInput($value)
+ * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereJobId($value)
+ * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereOutput($value)
+ * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereProgressMax($value)
+ * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereProgressNow($value)
+ * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereQueue($value)
+ * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereStartedAt($value)
+ * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereStatus($value)
+ * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereType($value)
  * @mixin \Eloquent
  */
 class JobStatus extends Model
@@ -62,12 +62,12 @@ class JobStatus extends Model
 
     public function getProgressPercentageAttribute()
     {
-        return $this->progress_max != 0 ? round(100 * $this->progress_now / $this->progress_max) : 0;
+        return $this->progress_max !== 0 ? round(100 * $this->progress_now / $this->progress_max) : 0;
     }
-    
+
     public function getIsEndedAttribute()
     {
-        return in_array($this->status, [self::STATUS_FAILED, self::STATUS_FINISHED]);
+        return \in_array($this->status, [self::STATUS_FAILED, self::STATUS_FINISHED], true);
     }
 
     public function getIsFinishedAttribute()
@@ -79,7 +79,7 @@ class JobStatus extends Model
     {
         return $this->status === self::STATUS_FAILED;
     }
-    
+
     public function getIsExecutingAttribute()
     {
         return $this->status === self::STATUS_EXECUTING;
@@ -107,7 +107,7 @@ class JobStatus extends Model
             self::STATUS_QUEUED,
             self::STATUS_EXECUTING,
             self::STATUS_FINISHED,
-            self::STATUS_FAILED
+            self::STATUS_FAILED,
         ];
     }
 }

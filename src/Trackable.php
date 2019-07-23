@@ -17,7 +17,7 @@ trait Trackable
 
     protected function setProgressNow($value, $every = 1)
     {
-        if ($value % $every == 0 || $value == $this->progressMax) {
+        if ($value % $every === 0 || $value === $this->progressMax) {
             $this->update(['progress_now' => $value]);
         }
         $this->progressNow = $value;
@@ -44,11 +44,12 @@ trait Trackable
         /** @var JobStatus $entityClass */
         $entityClass = app(config('job-status.model'));
         /** @var JobStatus $status */
-        $status = $entityClass::find($this->statusId);
+        $status = $entityClass::query()->find($this->statusId);
 
-        if ($status != null) {
+        if ($status !== null) {
             return $status->update($data);
         }
+
         return null;
     }
 
@@ -57,9 +58,9 @@ trait Trackable
         /** @var JobStatus $entityClass */
         $entityClass = app(config('job-status.model'));
 
-        $data = array_merge(["type" => $this->getDisplayName()], $data);
+        $data = array_merge(['type' => $this->getDisplayName()], $data);
         /** @var JobStatus $status */
-        $status = $entityClass::create($data);
+        $status = $entityClass::query()->create($data);
 
         $this->statusId = $status->getKey();
     }
@@ -71,8 +72,8 @@ trait Trackable
 
     public function getJobStatusId()
     {
-        if ($this->statusId == null) {
-            throw new \Exception("Failed to get jobStatusId, have you called \$this->prepareStatus() in __construct() of Job?");
+        if ($this->statusId === null) {
+            throw new \Exception('Failed to get jobStatusId, have you called $this->prepareStatus() in __construct() of Job?');
         }
 
         return $this->statusId;
