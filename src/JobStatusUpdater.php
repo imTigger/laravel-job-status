@@ -65,7 +65,7 @@ class JobStatusUpdater
 
     private function getJobStatusId($job)
     {
-        if (method_exists($job, 'getJobStatusId')) {
+        if ($job instanceof TrackableJob || method_exists($job, 'getJobStatusId')) {
             return $job->getJobStatusId();
         }
 

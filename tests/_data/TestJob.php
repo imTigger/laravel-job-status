@@ -4,16 +4,23 @@ namespace Imtigger\LaravelJobStatus\Tests\Data;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Imtigger\LaravelJobStatus\Trackable;
+use Imtigger\LaravelJobStatus\TrackableJob;
 
-class TrackableJob implements ShouldQueue
+class TestJob implements ShouldQueue, TrackableJob
 {
-    use InteractsWithQueue, Queueable, SerializesModels, Trackable;
+    use InteractsWithQueue, SerializesModels, Queueable, Dispatchable, Trackable;
 
     public function __construct()
     {
         $this->prepareStatus();
+    }
+
+    public function handle()
+    {
+
     }
 }

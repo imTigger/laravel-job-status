@@ -1,6 +1,6 @@
 <?php
 
-namespace Imtigger\LaravelJobStatus\Tests;
+namespace Imtigger\LaravelJobStatus\Tests\Unit;
 
 use Imtigger\LaravelJobStatus\JobStatus;
 use Orchestra\Testbench\TestCase;

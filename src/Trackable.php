@@ -41,16 +41,9 @@ trait Trackable
 
     protected function update(array $data)
     {
-        /** @var JobStatus $entityClass */
-        $entityClass = app(config('job-status.model'));
-        /** @var JobStatus $status */
-        $status = $entityClass::query()->find($this->statusId);
-
-        if ($status !== null) {
-            return $status->update($data);
-        }
-
-        return null;
+        /** @var JobStatusUpdater $updater */
+        $updater = app(JobStatusUpdater::class);
+        $updater->update($this, $data);
     }
 
     protected function prepareStatus(array $data = [])
