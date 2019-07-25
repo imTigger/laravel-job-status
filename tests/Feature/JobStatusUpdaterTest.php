@@ -5,8 +5,6 @@ namespace Imtigger\LaravelJobStatus\Tests\Feature;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Imtigger\LaravelJobStatus\JobStatusUpdater;
 use Imtigger\LaravelJobStatus\Tests\Data\TestJob;
-use Imtigger\LaravelJobStatus\Trackable;
-use Imtigger\LaravelJobStatus\TrackableJob;
 
 class JobStatusUpdaterTest extends TestCase
 {
@@ -16,14 +14,7 @@ class JobStatusUpdaterTest extends TestCase
         $updater = app(JobStatusUpdater::class);
 
         /** @var TestJob $job */
-        $job = new class {
-            use Trackable;
-
-            public function __construct()
-            {
-                $this->prepareStatus();
-            }
-        };
+        $job = new TestJob();
 
         $this->assertDatabaseHas('job_statuses', [
             'id' => $job->getJobStatusId(),
@@ -46,14 +37,7 @@ class JobStatusUpdaterTest extends TestCase
         $updater = app(JobStatusUpdater::class);
 
         /** @var TestJob $job */
-        $job = new class implements TrackableJob {
-            use Trackable;
-
-            public function __construct()
-            {
-                $this->prepareStatus();
-            }
-        };
+        $job = new TestJob();
 
         $this->assertDatabaseHas('job_statuses', [
             'id' => $job->getJobStatusId(),
@@ -84,7 +68,7 @@ class JobStatusUpdaterTest extends TestCase
         $this->assertDatabaseHas('job_statuses', [
             'id' => $job->getJobStatusId(),
             'job_id' => 0,
-            'status' => 'finished'
+            'status' => 'finished',
         ]);
     }
 }

@@ -2,18 +2,20 @@
 
 namespace Imtigger\LaravelJobStatus\Tests\Feature;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Imtigger\LaravelJobStatus\LaravelJobStatusServiceProvider;
 use Orchestra\Database\ConsoleServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 class TestCase extends OrchestraTestCase
 {
+    use DatabaseTransactions;
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->loadMigrationsFrom(realpath(__DIR__.'/../../database/migrations'));
+        $this->loadMigrationsFrom(realpath(__DIR__ . '/../../database/migrations'));
     }
 
     /**
@@ -26,5 +28,4 @@ class TestCase extends OrchestraTestCase
             ConsoleServiceProvider::class,
         ];
     }
-
 }

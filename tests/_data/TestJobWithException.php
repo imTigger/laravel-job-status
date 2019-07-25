@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Imtigger\LaravelJobStatus\Trackable;
 use Imtigger\LaravelJobStatus\TrackableJob;
 
-class TestJob implements ShouldQueue, TrackableJob
+class TestJobWithException implements ShouldQueue, TrackableJob
 {
     use InteractsWithQueue;
     use SerializesModels;
@@ -25,5 +25,6 @@ class TestJob implements ShouldQueue, TrackableJob
 
     public function handle()
     {
+        throw new \Exception('test-exception');
     }
 }

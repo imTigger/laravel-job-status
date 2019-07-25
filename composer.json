@@ -14,7 +14,7 @@
 		"queue"
     ],
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.0",
         "illuminate/contracts": ">=5.5",
         "illuminate/database": ">=5.5",
         "illuminate/queue": ">=5.5",

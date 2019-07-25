@@ -10,18 +10,13 @@ use Illuminate\Queue\SerializesModels;
 use Imtigger\LaravelJobStatus\Trackable;
 use Imtigger\LaravelJobStatus\TrackableJob;
 
-class TestJob implements ShouldQueue, TrackableJob
+class TestJobWithoutConstruct implements ShouldQueue, TrackableJob
 {
     use InteractsWithQueue;
     use SerializesModels;
     use Queueable;
     use Dispatchable;
     use Trackable;
-
-    public function __construct()
-    {
-        $this->prepareStatus();
-    }
 
     public function handle()
     {

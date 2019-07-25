@@ -4,7 +4,6 @@ namespace Imtigger\LaravelJobStatus\Tests\Feature;
 
 use Imtigger\LaravelJobStatus\JobStatusUpdater;
 use Imtigger\LaravelJobStatus\Tests\Data\TestJob;
-use Imtigger\LaravelJobStatus\Trackable;
 
 class JobStatusEventsTest extends TestCase
 {
@@ -14,14 +13,7 @@ class JobStatusEventsTest extends TestCase
         $updater = app(JobStatusUpdater::class);
 
         /** @var TestJob $job */
-        $job = new class {
-            use Trackable;
-
-            public function __construct()
-            {
-                $this->prepareStatus();
-            }
-        };
+        $job = new TestJob();
 
         $this->assertDatabaseHas('job_statuses', [
             'id' => $job->getJobStatusId(),
