@@ -41,7 +41,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Imtigger\\LaravelJobStatus\\": "tests"
+            "Imtigger\\LaravelJobStatus\\": "tests",
+            "Imtigger\\LaravelJobStatus\\Data": "tests/_data"
         }
     },
     "scripts": {

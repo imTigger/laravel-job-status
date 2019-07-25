@@ -16,4 +16,11 @@
             <directory suffix=".php">src</directory>
         </whitelist>
     </filter>
+    <php>
+        <env name="DB_HOST" value="mysql"/>
+        <env name="DB_DATABASE" value="db_rebuild"/>
+        <env name="DB_USERNAME" value="root"/>
+        <env name="DB_PASSWORD" value="secret"/>
+        <env name="APP_KEY" value="base64:c4nauF70phCYhDTA71kqmrJy+jv6CA+85PNurbM/PPw="/>
+    </php>
 </phpunit>
