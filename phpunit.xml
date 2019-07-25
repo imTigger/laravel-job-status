@@ -17,10 +17,10 @@
         </whitelist>
     </filter>
     <php>
-        <env name="DB_HOST" value="mysql"/>
+        <env name="DB_HOST" value="127.0.0.1"/>
         <env name="DB_DATABASE" value="job_status"/>
         <env name="DB_USERNAME" value="root"/>
-        <env name="DB_PASSWORD" value="secret"/>
+        <env name="DB_PASSWORD" value=""/>
         <env name="APP_KEY" value="base64:c4nauF70phCYhDTA71kqmrJy+jv6CA+85PNurbM/PPw="/>
     </php>
 </phpunit>
