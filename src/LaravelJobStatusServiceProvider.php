@@ -62,7 +62,7 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
             $updater->update($event, [
                 'status' => $entityClass::STATUS_FAILED,
                 'finished_at' => Carbon::now(),
-                'output' => json_encode(['message' => $event->exception->getMessage()]),
+                'output' => ['message' => $event->exception->getMessage()],
             ]);
         });
     }
