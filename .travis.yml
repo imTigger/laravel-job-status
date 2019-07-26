@@ -44,7 +44,8 @@ install:
   - COMPOSER_MEMORY_LIMIT=-1 travis_retry composer update --no-interaction --no-plugins --no-suggest --prefer-source ${COMPOSER_FLAGS}
 
 script:
-  - composer test
+  - vendor/bin/php-cs-fixer fix --config=.php_cs -v --dry-run --stop-on-violation
+  - vendor/bin/phpunit
 
 notifications:
   email: false
