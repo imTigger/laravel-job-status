@@ -10,9 +10,6 @@ use Imtigger\LaravelJobStatus\Tests\Data\TestJobWithDatabase;
 
 class DispatcherTest extends TestCase
 {
-    /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
     protected function getPackageProviders($app)
     {
         return array_merge(parent::getPackageProviders($app), [

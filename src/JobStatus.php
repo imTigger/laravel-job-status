@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property mixed  $is_executing
  * @property mixed  $is_failed
  * @property mixed  $is_finished
+ * @property mixed  $is_retrying
  * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereAttempts($value)
  * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereCreatedAt($value)
  * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereFinishedAt($value)
@@ -45,6 +46,7 @@ class JobStatus extends Model
     const STATUS_EXECUTING = 'executing';
     const STATUS_FINISHED = 'finished';
     const STATUS_FAILED = 'failed';
+    const STATUS_RETRYING = 'retrying';
 
     public $dates = ['started_at', 'finished_at', 'created_at', 'updated_at'];
     protected $guarded = [];
@@ -85,6 +87,11 @@ class JobStatus extends Model
         return $this->status === self::STATUS_QUEUED;
     }
 
+    public function getIsRetrying()
+    {
+        return $this->status === self::STATUS_RETRYING;
+    }
+
     public static function getAllowedStatuses()
     {
         return [
@@ -92,6 +99,7 @@ class JobStatus extends Model
             self::STATUS_EXECUTING,
             self::STATUS_FINISHED,
             self::STATUS_FAILED,
+            self::STATUS_RETRYING,
         ];
     }
 }

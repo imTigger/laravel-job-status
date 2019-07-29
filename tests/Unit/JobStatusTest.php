@@ -79,4 +79,12 @@ class JobStatusTest extends TestCase
 
         $this->assertTrue($jobStatus->isExecuting);
     }
+
+    public function testJobStatusIsRetrying()
+    {
+        $jobStatus = new JobStatus();
+        $jobStatus->status = 'retrying';
+
+        $this->assertTrue($jobStatus->isRetrying);
+    }
 }

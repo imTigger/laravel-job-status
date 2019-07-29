@@ -26,7 +26,8 @@
         "phpunit/phpunit": ">=5.7",
         "orchestra/testbench": ">=3.5",
         "orchestra/database": ">=3.5",
-        "friendsofphp/php-cs-fixer": "^2.11"
+        "friendsofphp/php-cs-fixer": "^2.11",
+        "sempro/phpunit-pretty-print": "^1.1"
     },
     "extra": {
         "laravel": {

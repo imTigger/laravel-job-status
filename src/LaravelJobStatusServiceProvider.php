@@ -2,13 +2,13 @@
 
 namespace Imtigger\LaravelJobStatus;
 
-use Carbon\Carbon;
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\QueueManager;
 use Illuminate\Support\ServiceProvider;
+use Imtigger\LaravelJobStatus\EventManagers\EventManager;
 
 class LaravelJobStatusServiceProvider extends ServiceProvider
 {
@@ -31,39 +31,21 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
 
     private function bootListeners()
     {
-        /** @var JobStatus $entityClass */
-        $entityClass = app(config('job-status.model'));
-
-        /** @var JobStatusUpdater $updater */
-        $updater = app(JobStatusUpdater::class);
+        /** @var EventManager $eventManager */
+        $eventManager = app(config('job-status.event_manager'));
 
         // Add Event listeners
-        app(QueueManager::class)->before(function (JobProcessing $event) use ($updater, $entityClass) {
-            $updater->update($event, [
-                'status' => $entityClass::STATUS_EXECUTING,
-                'job_id' => $event->job->getJobId(),
-                'queue' => $event->job->getQueue(),
-                'started_at' => Carbon::now(),
-            ]);
+        app(QueueManager::class)->before(function (JobProcessing $event) use ($eventManager) {
+            $eventManager->before($event);
         });
-        app(QueueManager::class)->after(function (JobProcessed $event) use ($updater, $entityClass) {
-            $updater->update($event, [
-                'status' => $entityClass::STATUS_FINISHED,
-                'finished_at' => Carbon::now(),
-            ]);
+        app(QueueManager::class)->after(function (JobProcessed $event) use ($eventManager) {
+            $eventManager->after($event);
         });
-        app(QueueManager::class)->failing(function (JobFailed $event) use ($updater, $entityClass) {
-            $updater->update($event, [
-                'status' => $entityClass::STATUS_FAILED,
-                'finished_at' => Carbon::now(),
-            ]);
+        app(QueueManager::class)->failing(function (JobFailed $event) use ($eventManager) {
+            $eventManager->failing($event);
         });
-        app(QueueManager::class)->exceptionOccurred(function (JobExceptionOccurred $event) use ($updater, $entityClass) {
-            $updater->update($event, [
-                'status' => $entityClass::STATUS_FAILED,
-                'finished_at' => Carbon::now(),
-                'output' => ['message' => $event->exception->getMessage()],
-            ]);
+        app(QueueManager::class)->exceptionOccurred(function (JobExceptionOccurred $event) use ($eventManager) {
+            $eventManager->exceptionOccurred($event);
         });
     }
 }
