@@ -9,12 +9,17 @@ use Illuminate\Queue\InteractsWithQueue;
 use Imtigger\LaravelJobStatus\Trackable;
 use Imtigger\LaravelJobStatus\TrackableJob;
 
-class TestJobWithoutConstruct implements ShouldQueue, TrackableJob
+class TestJobWithoutTracking implements ShouldQueue, TrackableJob
 {
     use InteractsWithQueue;
     use Queueable;
     use Dispatchable;
     use Trackable;
+
+    public function __construct()
+    {
+        $this->shouldTrack = false;
+    }
 
     public function handle()
     {

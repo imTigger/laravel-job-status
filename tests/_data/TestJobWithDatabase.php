@@ -8,7 +8,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase;
 use Illuminate\Foundation\Testing\Constraints\HasInDatabase;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use Imtigger\LaravelJobStatus\Tests\Feature\TestCase;
 use Imtigger\LaravelJobStatus\Trackable;
 use Imtigger\LaravelJobStatus\TrackableJob;

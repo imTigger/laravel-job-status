@@ -14,6 +14,7 @@ trait Trackable
     protected $statusId;
     protected $progressNow = 0;
     protected $progressMax = 0;
+    protected $shouldTrack = true;
 
     protected function setProgressMax($value)
     {
@@ -76,7 +77,7 @@ trait Trackable
 
     public function __sleep()
     {
-        if (!$this->statusId) {
+        if (!$this->statusId && $this->shouldTrack) {
             $this->prepareStatus();
         }
 

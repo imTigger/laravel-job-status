@@ -87,7 +87,7 @@ class JobStatus extends Model
         return $this->status === self::STATUS_QUEUED;
     }
 
-    public function getIsRetrying()
+    public function getIsRetryingAttribute()
     {
         return $this->status === self::STATUS_RETRYING;
     }
