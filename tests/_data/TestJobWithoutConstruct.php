@@ -13,7 +13,6 @@ use Imtigger\LaravelJobStatus\TrackableJob;
 class TestJobWithoutConstruct implements ShouldQueue, TrackableJob
 {
     use InteractsWithQueue;
-    use SerializesModels;
     use Queueable;
     use Dispatchable;
     use Trackable;

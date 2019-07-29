@@ -4,6 +4,7 @@ namespace Imtigger\LaravelJobStatus\Tests\Feature;
 
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Support\Facades\Artisan;
+use Imtigger\LaravelJobStatus\JobStatus;
 use Imtigger\LaravelJobStatus\LaravelJobStatusBusServiceProvider;
 use Imtigger\LaravelJobStatus\Tests\Data\TestJob;
 use Imtigger\LaravelJobStatus\Tests\Data\TestJobWithDatabase;
@@ -64,10 +65,14 @@ class TrackableTest extends TestCase
 
     public function testWithoutPrepareStatus()
     {
-        $this->expectException(\Exception::class);
-
         $job = new TestJobWithoutConstruct();
 
+        $this->assertNull($job->getJobStatusId());
+
+        $this->assertEquals(0, JobStatus::query()->count());
+
         app(Dispatcher::class)->dispatch($job);
+
+        $this->assertEquals(1, JobStatus::query()->count());
     }
 }

@@ -2,8 +2,14 @@
 
 namespace Imtigger\LaravelJobStatus;
 
+use Illuminate\Queue\SerializesModels;
+
 trait Trackable
 {
+    use SerializesModels {
+        __sleep as traitSleep;
+    }
+
     /** @var int $statusId */
     protected $statusId;
     protected $progressNow = 0;
@@ -65,10 +71,15 @@ trait Trackable
 
     public function getJobStatusId()
     {
-        if ($this->statusId === null) {
-            throw new \Exception('Failed to get jobStatusId, have you called $this->prepareStatus() in __construct() of Job?');
+        return $this->statusId;
+    }
+
+    public function __sleep()
+    {
+        if (!$this->statusId) {
+            $this->prepareStatus();
         }
 
-        return $this->statusId;
+        return $this->traitSleep();
     }
 }

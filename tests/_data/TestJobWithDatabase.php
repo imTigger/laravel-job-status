@@ -16,7 +16,6 @@ use Imtigger\LaravelJobStatus\TrackableJob;
 class TestJobWithDatabase implements ShouldQueue, TrackableJob
 {
     use InteractsWithQueue;
-    use SerializesModels;
     use Queueable;
     use Dispatchable;
     use Trackable;
