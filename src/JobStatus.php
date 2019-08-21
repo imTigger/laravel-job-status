@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property mixed  $is_executing
  * @property mixed  $is_failed
  * @property mixed  $is_finished
+ * @property mixed  $is_retrying
  * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereAttempts($value)
  * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereCreatedAt($value)
  * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereFinishedAt($value)
@@ -45,21 +46,17 @@ class JobStatus extends Model
     const STATUS_EXECUTING = 'executing';
     const STATUS_FINISHED = 'finished';
     const STATUS_FAILED = 'failed';
+    const STATUS_RETRYING = 'retrying';
 
     public $dates = ['started_at', 'finished_at', 'created_at', 'updated_at'];
     protected $guarded = [];
 
+    protected $casts = [
+        'input' => 'array',
+        'output' => 'array',
+    ];
+
     /* Accessor */
-    public function getInputAttribute($value)
-    {
-        return json_decode($value, true);
-    }
-
-    public function getOutputAttribute($value)
-    {
-        return json_decode($value, true);
-    }
-
     public function getProgressPercentageAttribute()
     {
         return $this->progress_max !== 0 ? round(100 * $this->progress_now / $this->progress_max) : 0;
@@ -90,15 +87,9 @@ class JobStatus extends Model
         return $this->status === self::STATUS_QUEUED;
     }
 
-    /* Mutator */
-    public function setInputAttribute($value)
+    public function getIsRetryingAttribute()
     {
-        $this->attributes['input'] = json_encode($value);
-    }
-
-    public function setOutputAttribute($value)
-    {
-        $this->attributes['output'] = json_encode($value);
+        return $this->status === self::STATUS_RETRYING;
     }
 
     public static function getAllowedStatuses()
@@ -108,6 +99,7 @@ class JobStatus extends Model
             self::STATUS_EXECUTING,
             self::STATUS_FINISHED,
             self::STATUS_FAILED,
+            self::STATUS_RETRYING,
         ];
     }
 }

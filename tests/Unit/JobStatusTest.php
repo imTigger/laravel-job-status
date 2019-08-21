@@ -1,6 +1,6 @@
 <?php
 
-namespace Imtigger\LaravelJobStatus\Tests;
+namespace Imtigger\LaravelJobStatus\Tests\Unit;
 
 use Imtigger\LaravelJobStatus\JobStatus;
 use Orchestra\Testbench\TestCase;
@@ -78,5 +78,13 @@ class JobStatusTest extends TestCase
         $jobStatus->status = 'executing';
 
         $this->assertTrue($jobStatus->isExecuting);
+    }
+
+    public function testJobStatusIsRetrying()
+    {
+        $jobStatus = new JobStatus();
+        $jobStatus->status = 'retrying';
+
+        $this->assertTrue($jobStatus->isRetrying);
     }
 }

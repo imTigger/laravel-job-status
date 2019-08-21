@@ -1,20 +1,51 @@
 language: php
 
-php:
-  - 5.6
-  - 7.1
-
-sudo: false
-
-# cache vendor dirs
 cache:
   directories:
-    - vendor
     - $HOME/.composer/cache
 
-before_script:
-  - composer self-update
-  - composer install --no-interaction
+services:
+  - mysql
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 7.1
+      env: LARAVEL='5.5.*' TESTBENCH='3.5.*' COMPOSER_FLAGS='--prefer-lowest'
+    - php: 7.1
+      env: LARAVEL='5.6.*' TESTBENCH='3.6.*'
+    - php: 7.1
+      env: LARAVEL='5.7.*' TESTBENCH='3.7.*'
+    - php: 7.1
+      env: LARAVEL='5.8.*' TESTBENCH='3.8.*'
+    - php: 7.2
+      env: LARAVEL='5.5.*' TESTBENCH='3.5.*'
+    - php: 7.2
+      env: LARAVEL='5.6.*' TESTBENCH='3.6.*'
+    - php: 7.2
+      env: LARAVEL='5.7.*' TESTBENCH='3.7.*'
+    - php: 7.2
+      env: LARAVEL='5.8.*' TESTBENCH='3.8.*'
+    - php: 7.3
+      env: LARAVEL='5.5.*' TESTBENCH='3.5.*'
+    - php: 7.3
+      env: LARAVEL='5.6.*' TESTBENCH='3.6.*'
+    - php: 7.3
+      env: LARAVEL='5.7.*' TESTBENCH='3.7.*'
+    - php: 7.3
+      env: LARAVEL='5.8.*' TESTBENCH='3.8.*'
+
+before_install:
+  - mysql -e 'CREATE DATABASE job_status;'
+  - travis_retry composer self-update
+  - COMPOSER_MEMORY_LIMIT=-1 travis_retry composer require --no-update --no-interaction "illuminate/support:${LARAVEL}" "illuminate/database:${LARAVEL}" "orchestra/testbench:${TESTBENCH}"
+
+install:
+  - COMPOSER_MEMORY_LIMIT=-1 travis_retry composer update --no-interaction --no-plugins --no-suggest --prefer-source ${COMPOSER_FLAGS}
 
 script:
-  - composer test
+  - vendor/bin/php-cs-fixer fix --config=.php_cs -v --dry-run --stop-on-violation
+  - vendor/bin/phpunit
+
+notifications:
+  email: false
