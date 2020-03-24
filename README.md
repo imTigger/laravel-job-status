@@ -184,7 +184,7 @@ On version >= 1.1, dedicated database connection support is added.
 
 Therefore JobStatus updates can be saved instantly even within your application transaction.
 
-Read setup step 5 for instruction.
+Read setup step 6 for instructions.
 
 
 ## Documentations
