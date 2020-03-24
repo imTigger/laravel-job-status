@@ -59,6 +59,7 @@ class JobStatusUpdater
             return unserialize($payload['data']['command']);
         } catch (\Throwable $e) {
             Log::error($e->getMessage());
+
             return null;
         }
     }

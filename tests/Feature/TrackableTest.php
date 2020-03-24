@@ -9,7 +9,6 @@ use Imtigger\LaravelJobStatus\LaravelJobStatusBusServiceProvider;
 use Imtigger\LaravelJobStatus\Tests\Data\TestJob;
 use Imtigger\LaravelJobStatus\Tests\Data\TestJobWithDatabase;
 use Imtigger\LaravelJobStatus\Tests\Data\TestJobWithException;
-use Imtigger\LaravelJobStatus\Tests\Data\TestJobWithoutConstruct;
 use Imtigger\LaravelJobStatus\Tests\Data\TestJobWithoutTracking;
 
 class TrackableTest extends TestCase
