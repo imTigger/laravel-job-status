@@ -19,7 +19,7 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/job-status.php', 'job-status');
 
         $this->publishes([
-            __DIR__ . '../database/migrations/' => database_path('migrations'),
+            __DIR__ . '/../database/migrations/' => database_path('migrations'),
         ], 'migrations');
 
         $this->publishes([
