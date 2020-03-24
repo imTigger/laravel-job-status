@@ -82,11 +82,13 @@ If you would like the job_id to be stored immediately you can add the `LaravelJo
 
 #### 6. Setup dedicated database connection (optional)
 
-Laravel support only one transcation per database connection, 
+Laravel support only one transcation per database connection.
 
 All changes made by JobStatus are also within transaction and therefore invisible to other connnections (e.g. progress page)
 
+If your job will update progress within transaction, copy your connection in `config/database.php` under another name like `'mysql-job-status'` with same config.
 
+Then set your connection to `'database_connection' => 'mysql-job-status'` in `config/job-status.php`
 
 ### Usage
 
