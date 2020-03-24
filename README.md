@@ -22,8 +22,8 @@ Laravel package to add ability to track `Job` progress, status and result dispat
 
 ## Requirements
 
-- PHP >= 5.6.4
-- Laravel >= 5.3
+- PHP >= 7.1
+- Laravel >= 5.5
 
 ## Installation
 
