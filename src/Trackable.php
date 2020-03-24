@@ -51,6 +51,8 @@ trait Trackable
 
     protected function prepareStatus(array $data = [])
     {
+        if (!$this->shouldTrack) return;
+        
         /** @var JobStatus $entityClass */
         $entityClass = app(config('job-status.model'));
 

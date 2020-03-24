@@ -64,20 +64,7 @@ class TrackableTest extends TestCase
         ]);
     }
 
-    public function testWithoutPrepareStatus()
-    {
-        $job = new TestJobWithoutConstruct();
-
-        $this->assertNull($job->getJobStatusId());
-
-        $this->assertEquals(0, JobStatus::query()->count());
-
-        app(Dispatcher::class)->dispatch($job);
-
-        $this->assertEquals(1, JobStatus::query()->count());
-    }
-
-    public function testWithoutPrepareStatusAndTrackingDisabled()
+    public function testTrackingDisabled()
     {
         $job = new TestJobWithoutTracking();
 

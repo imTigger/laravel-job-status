@@ -19,6 +19,7 @@ class TestJobWithoutTracking implements ShouldQueue, TrackableJob
     public function __construct()
     {
         $this->shouldTrack = false;
+        $this->prepareStatus();
     }
 
     public function handle()
