@@ -80,6 +80,14 @@ If you would like the job_id to be stored immediately you can add the `LaravelJo
 ]
 ```
 
+#### 6. Setup dedicated database connection (optional)
+
+Laravel support only one transcation per database connection, 
+
+All changes made by JobStatus are also within transaction and therefore invisible to other connnections (e.g. progress page)
+
+
+
 ### Usage
 
 In your `Job`, use `Trackable` trait and call `$this->prepareStatus()` in constructor.
@@ -149,7 +157,9 @@ class YourController {
 <?php
 $jobStatus = JobStatus::find($jobStatusId);
 ```
-### Common Caveat
+### Troubleshooting
+
+#### Call to undefined method ...->getJobStatusId()
 
 Laravel provide many ways to dispatch Jobs. Not all methods return your Job object, for example:
 
@@ -158,13 +168,22 @@ Laravel provide many ways to dispatch Jobs. Not all methods return your Job obje
 YourJob::dispatch(); // Returns PendingDispatch instead of YourJob object, leaving no way to retrive `$job->getJobStatusId();`
 ```
 
-Workarounds: Create your own key
+If you really need to dispatch job in this way, workarounds needed: Create your own key
 
 1. Create migration adding extra key to job_statuses table.
 
 2. In your job, generate your own unique key and pass into `prepareStatus();`, `$this->prepareStatus(['key' => $params['key']]);`
 
 3. Find JobStatus another way: `$jobStatus = JobStatus::whereKey($key)->firstOrFail();`
+
+#### Status not updating until transaction commited
+
+On version >= 1.1, dedicated database connection support is added.
+
+Therefore JobStatus updates can be saved instantly even within your application transaction.
+
+Read setup step 5 for instruction.
+
 
 ## Documentations
 
