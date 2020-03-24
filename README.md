@@ -45,7 +45,7 @@ Add the following to your `config/app.php`:
 ]
 ```
 
-#### 2. Publish migration and config
+#### 2. Publish migration and config (optional)
 
 ```bash
 php artisan vendor:publish --provider="Imtigger\LaravelJobStatus\LaravelJobStatusServiceProvider"
@@ -96,7 +96,7 @@ use Imtigger\LaravelJobStatus\Trackable;
 
 class TrackableJob implements ShouldQueue
 {
-    use InteractsWithQueue, Queueable, Trackable;
+    use InteractsWithQueue, Queueable, SerializesModels, Trackable;
 
     public function __construct(array $params)
     {
