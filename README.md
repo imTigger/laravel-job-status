@@ -57,19 +57,7 @@ php artisan vendor:publish --provider="Imtigger\LaravelJobStatus\LaravelJobStatu
 php artisan migrate
 ```
 
-#### 4. Improve job_id capture (optional)
-
-The first laravel event that can be captured to insert the job_id into the JobStatus model is the Queue::before event. This means that the JobStatus won't have a job_id until it is being processed for the first time.
-
-If you would like the job_id to be stored immediately you can add the `LaravelJobStatusServiceProvider` to your `config/app.php`, which tells laravel to use our `Dispatcher`.
-```php
-'providers' => [
-    ...
-    Imtigger\LaravelJobStatus\LaravelJobStatusServiceProvider::class,
-]
-```
-
-#### 5. Use a custom JobStatus model
+#### 4. Use a custom JobStatus model (optional)
 
 To use your own JobStatus model you can change the model in `config/job-status.php`
 
@@ -77,6 +65,19 @@ To use your own JobStatus model you can change the model in `config/job-status.p
 return [
     'model' => App\JobStatus::class,
 ];
+
+```
+
+#### 5. Improve job_id capture (optional)
+
+The first laravel event that can be captured to insert the job_id into the JobStatus model is the Queue::before event. This means that the JobStatus won't have a job_id until it is being processed for the first time.
+
+If you would like the job_id to be stored immediately you can add the `LaravelJobStatusServiceProvider` to your `config/app.php`, which tells laravel to use our `Dispatcher`.
+```php
+'providers' => [
+    ...
+    \Imtigger\LaravelJobStatus\LaravelJobStatusBusServiceProvider::class,,
+]
 ```
 
 ### Usage
@@ -95,7 +96,7 @@ use Imtigger\LaravelJobStatus\Trackable;
 
 class TrackableJob implements ShouldQueue
 {
-    use InteractsWithQueue, Queueable, SerializesModels, Trackable;
+    use InteractsWithQueue, Queueable, Trackable;
 
     public function __construct(array $params)
     {
