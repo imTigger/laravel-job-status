@@ -7,8 +7,7 @@
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
          verbose="true"
-         colors="true"
-         printerClass="Sempro\PHPUnitPrettyPrinter\PrettyPrinter">
+         colors="true">
     <testsuite name="default">
         <directory suffix="Test.php">tests</directory>
     </testsuite>
