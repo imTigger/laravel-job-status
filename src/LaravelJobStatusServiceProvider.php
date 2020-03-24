@@ -14,7 +14,7 @@ class LaravelJobStatusServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
         $this->mergeConfigFrom(__DIR__ . '/../config/job-status.php', 'job-status');
 
