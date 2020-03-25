@@ -32,8 +32,12 @@ class JobStatusUpdater
         }
 
         try {
-            $data['attempts'] = $job->attempts();
+            $data['attempts'] = $event->job->attempts();
         } catch (\Exception $e) {
+            try {
+                $data['attempts'] = $job->attempts();
+            } catch (\Exception $e) {
+            }
         }
 
         $jobStatus->update($data);
