@@ -32,9 +32,13 @@ class JobStatusUpdater
         }
 
         try {
-            $data['attempts'] = $job->attempts();
-        } catch (\Throwable $e) {
-            Log::error($e->getMessage());
+            $data['attempts'] = $event->job->attempts();
+        } catch (\Exception $e) {
+            try {
+                $data['attempts'] = $job->attempts();
+            } catch (\Exception $e) {
+
+            }
         }
 
         $jobStatus->update($data);
@@ -57,8 +61,9 @@ class JobStatusUpdater
             $payload = $event->job->payload();
 
             return unserialize($payload['data']['command']);
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             Log::error($e->getMessage());
+
             return null;
         }
     }
