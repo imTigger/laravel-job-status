@@ -22,8 +22,8 @@ Laravel package to add ability to track `Job` progress, status and result dispat
 
 ## Requirements
 
-- PHP >= 5.6.4
-- Laravel >= 5.3
+- PHP >= 7.1
+- Laravel >= 5.5
 
 ## Installation
 
@@ -45,7 +45,7 @@ Add the following to your `config/app.php`:
 ]
 ```
 
-#### 2. Publish migration and config
+#### 2. Publish migration and config (optional)
 
 ```bash
 php artisan vendor:publish --provider="Imtigger\LaravelJobStatus\LaravelJobStatusServiceProvider"
@@ -57,19 +57,7 @@ php artisan vendor:publish --provider="Imtigger\LaravelJobStatus\LaravelJobStatu
 php artisan migrate
 ```
 
-#### 4. Improve job_id capture (optional)
-
-The first laravel event that can be captured to insert the job_id into the JobStatus model is the Queue::before event. This means that the JobStatus won't have a job_id until it is being processed for the first time.
-
-If you would like the job_id to be stored immediately you can add the `LaravelJobStatusServiceProvider` to your `config/app.php`, which tells laravel to use our `Dispatcher`.
-```php
-'providers' => [
-    ...
-    Imtigger\LaravelJobStatus\LaravelJobStatusServiceProvider::class,
-]
-```
-
-#### 5. Use a custom JobStatus model
+#### 4. Use a custom JobStatus model (optional)
 
 To use your own JobStatus model you can change the model in `config/job-status.php`
 
@@ -77,7 +65,30 @@ To use your own JobStatus model you can change the model in `config/job-status.p
 return [
     'model' => App\JobStatus::class,
 ];
+
 ```
+
+#### 5. Improve job_id capture (optional)
+
+The first laravel event that can be captured to insert the job_id into the JobStatus model is the Queue::before event. This means that the JobStatus won't have a job_id until it is being processed for the first time.
+
+If you would like the job_id to be stored immediately you can add the `LaravelJobStatusServiceProvider` to your `config/app.php`, which tells laravel to use our `Dispatcher`.
+```php
+'providers' => [
+    ...
+    \Imtigger\LaravelJobStatus\LaravelJobStatusBusServiceProvider::class,,
+]
+```
+
+#### 6. Setup dedicated database connection (optional)
+
+Laravel support only one transcation per database connection.
+
+All changes made by JobStatus are also within transaction and therefore invisible to other connnections (e.g. progress page)
+
+If your job will update progress within transaction, copy your connection in `config/database.php` under another name like `'mysql-job-status'` with same config.
+
+Then set your connection to `'database_connection' => 'mysql-job-status'` in `config/job-status.php`
 
 ### Usage
 
@@ -148,7 +159,9 @@ class YourController {
 <?php
 $jobStatus = JobStatus::find($jobStatusId);
 ```
-### Common Caveat
+### Troubleshooting
+
+#### Call to undefined method ...->getJobStatusId()
 
 Laravel provide many ways to dispatch Jobs. Not all methods return your Job object, for example:
 
@@ -157,13 +170,22 @@ Laravel provide many ways to dispatch Jobs. Not all methods return your Job obje
 YourJob::dispatch(); // Returns PendingDispatch instead of YourJob object, leaving no way to retrive `$job->getJobStatusId();`
 ```
 
-Workarounds: Create your own key
+If you really need to dispatch job in this way, workarounds needed: Create your own key
 
 1. Create migration adding extra key to job_statuses table.
 
 2. In your job, generate your own unique key and pass into `prepareStatus();`, `$this->prepareStatus(['key' => $params['key']]);`
 
 3. Find JobStatus another way: `$jobStatus = JobStatus::whereKey($key)->firstOrFail();`
+
+#### Status not updating until transaction commited
+
+On version >= 1.1, dedicated database connection support is added.
+
+Therefore JobStatus updates can be saved instantly even within your application transaction.
+
+Read setup step 6 for instructions.
+
 
 ## Documentations
 

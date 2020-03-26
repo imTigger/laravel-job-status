@@ -83,7 +83,7 @@ class JobStatusUpdater
             /** @var JobStatus $entityClass */
             $entityClass = app(config('job-status.model'));
 
-            return $entityClass::query()->where('id', '=', $id)->first();
+            return $entityClass::on(config('job-status.database_connection'))->whereKey($id)->first();
         }
 
         return null;
