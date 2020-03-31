@@ -2,6 +2,7 @@
 
 [![Latest Stable Version](https://poser.pugx.org/imTigger/laravel-job-status/v/stable)](https://packagist.org/packages/imTigger/laravel-job-status)
 [![Total Downloads](https://poser.pugx.org/imTigger/laravel-job-status/downloads)](https://packagist.org/packages/imTigger/laravel-job-status)
+[![Build Status](https://travis-ci.org/imTigger/laravel-job-status.svg?branch=master)](https://travis-ci.org/imTigger/laravel-job-status)
 [![License](https://poser.pugx.org/imTigger/laravel-job-status/license)](https://packagist.org/packages/imTigger/laravel-job-status)
 
 
