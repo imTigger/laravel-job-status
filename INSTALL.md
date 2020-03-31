@@ -49,7 +49,7 @@ If you would like the job_id to be stored immediately you can add the `LaravelJo
 ```php
 'providers' => [
     ...
-    \Imtigger\LaravelJobStatus\LaravelJobStatusBusServiceProvider::class,,
+    \Imtigger\LaravelJobStatus\LaravelJobStatusBusServiceProvider::class,
 ]
 ```
 
