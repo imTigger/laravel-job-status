@@ -133,7 +133,7 @@ Read setup step 6 for instructions.
 
 ```php
 <?php
-// Job protected methods
+// Job protected methods (Call from your Job)
 $this->prepareStatus();                           // Must be called in constructor before any other methods
 $this->setProgressMax(int $v);                    // Update the max number of progress
 $this->setProgressNow(int $v);                    // Update the current number progress
@@ -143,14 +143,14 @@ $this->incrementProgress(int $offset, int $every) // Increase current number pro
 $this->setInput(array $v);                        // Store input into database
 $this->setOutput(array $v);                       // Store output into database (Typically the run result)
 
-// Job public methods
+// Job public methods (Call from your Job dispatcher)
 $job->getJobStatusId();                       // Return the primary key of JobStatus (To retrieve status later)
 
-// JobStatus fields
+// JobStatus object fields
 var_dump($jobStatus->job_id);                 // String (Result varies with driver, see note)
 var_dump($jobStatus->type);                   // String
 var_dump($jobStatus->queue);                  // String
-var_dump($jobStatus->status);                 // String [queued|executing|finished|failed]
+var_dump($jobStatus->status);                 // String [queued|executing|finished|retrying|failed]
 var_dump($jobStatus->attempts);               // Integer
 var_dump($jobStatus->progress_now);           // Integer
 var_dump($jobStatus->progress_max);           // Integer
@@ -167,6 +167,7 @@ var_dump($jobStatus->is_ended);               // Boolean, true if status == fini
 var_dump($jobStatus->is_executing);           // Boolean, true if status == executing
 var_dump($jobStatus->is_failed);              // Boolean, true if status == failed
 var_dump($jobStatus->is_finished);            // Boolean, true if status == finished
+var_dump($jobStatus->is_retrying);            // Boolean, true if status == retrying
 ```
 
 # Note 
