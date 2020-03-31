@@ -13,7 +13,7 @@ Follow the [instruction by mabasic](https://gist.github.com/mabasic/21d13eab1246
 
 #### 1. Add Service Provider and QueueManager Binding
 
-Add the following to your `config/app.php`:
+Add the following to your `bootstrap/app.php`:
 
 ```php
 $app->bind(\Illuminate\Queue\QueueManager::class, function ($app) {
@@ -52,12 +52,9 @@ return [
 
 The first laravel event that can be captured to insert the job_id into the JobStatus model is the Queue::before event. This means that the JobStatus won't have a job_id until it is being processed for the first time.
 
-If you would like the job_id to be stored immediately you can add the `LaravelJobStatusServiceProvider` to your `config/app.php`, which tells laravel to use our `Dispatcher`.
+If you would like the job_id to be stored immediately you can add the `LaravelJobStatusServiceProvider` to your `bootstrap/app.php`, which tells laravel to use our `Dispatcher`.
 ```php
-'providers' => [
-    ...
-    \Imtigger\LaravelJobStatus\LaravelJobStatusBusServiceProvider::class,,
-]
+$app->register(Imtigger\LaravelJobStatus\LaravelJobStatusBusServiceProvider::class);
 ```
 
 #### 6. Setup dedicated database connection (optional)
