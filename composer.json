@@ -4,12 +4,13 @@
   "license": "MIT",
   "authors": [
     {
-      "name": "Tiger",
+      "name": "Tiger Fok",
       "email": "tiger@tiger-workshop.com"
     }
   ],
   "keywords": [
     "laravel",
+    "lumen",
     "job",
     "queue"
   ],
