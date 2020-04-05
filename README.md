@@ -167,6 +167,7 @@ var_dump($jobStatus->is_ended);               // Boolean, true if status == fini
 var_dump($jobStatus->is_executing);           // Boolean, true if status == executing
 var_dump($jobStatus->is_failed);              // Boolean, true if status == failed
 var_dump($jobStatus->is_finished);            // Boolean, true if status == finished
+var_dump($jobStatus->is_queued);              // Boolean, true if status == queued
 var_dump($jobStatus->is_retrying);            // Boolean, true if status == retrying
 ```
 
