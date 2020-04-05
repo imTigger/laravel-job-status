@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property mixed  $is_executing
  * @property mixed  $is_failed
  * @property mixed  $is_finished
+ * @property mixed  $is_queued
  * @property mixed  $is_retrying
  * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereAttempts($value)
  * @method   static \Illuminate\Database\Query\Builder|\Imtigger\LaravelJobStatus\JobStatus whereCreatedAt($value)
