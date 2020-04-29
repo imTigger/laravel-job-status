@@ -22,7 +22,7 @@ class JobStatusUpdater
     /**
      * @param JobProcessing|JobProcessed|JobFailed|JobExceptionOccurred $event
      */
-    private function updateEvent($event, array $data)
+    protected function updateEvent($event, array $data)
     {
         $job = $this->parseJob($event);
         $jobStatus = $this->getJobStatus($job);
@@ -44,7 +44,7 @@ class JobStatusUpdater
         $jobStatus->update($data);
     }
 
-    private function updateJob($job, array $data)
+    protected function updateJob($job, array $data)
     {
         if ($jobStatus = $this->getJobStatus($job)) {
             $jobStatus->update($data);
@@ -55,7 +55,7 @@ class JobStatusUpdater
      * @param  JobProcessing|JobProcessed|JobFailed|JobExceptionOccurred $event
      * @return mixed|null
      */
-    private function parseJob($event)
+    protected function parseJob($event)
     {
         try {
             $payload = $event->job->payload();
@@ -68,7 +68,7 @@ class JobStatusUpdater
         }
     }
 
-    private function getJobStatusId($job)
+    protected function getJobStatusId($job)
     {
         if ($job instanceof TrackableJob || method_exists($job, 'getJobStatusId')) {
             return $job->getJobStatusId();
@@ -77,7 +77,7 @@ class JobStatusUpdater
         return null;
     }
 
-    private function getJobStatus($job)
+    protected function getJobStatus($job)
     {
         if ($id = $this->getJobStatusId($job)) {
             /** @var JobStatus $entityClass */
@@ -89,7 +89,7 @@ class JobStatusUpdater
         return null;
     }
 
-    private function isEvent($job)
+    protected function isEvent($job)
     {
         return $job instanceof JobProcessing
             || $job instanceof JobProcessed
