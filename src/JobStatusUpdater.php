@@ -70,8 +70,14 @@ class JobStatusUpdater
 
     private function getJobStatusId($job)
     {
-        if ($job instanceof TrackableJob || method_exists($job, 'getJobStatusId')) {
-            return $job->getJobStatusId();
+        try {
+            if ($job instanceof TrackableJob || method_exists($job, 'getJobStatusId')) {
+                return $job->getJobStatusId();
+            }
+        } catch (\Throwable $e) {
+            Log::error($e->getMessage());
+
+            return null;
         }
 
         return null;
