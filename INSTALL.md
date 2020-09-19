@@ -43,7 +43,7 @@ return [
 
 #### 5. Improve job_id capture (optional)
 
-The first laravel event that can be captured to insert the job_id into the JobStatus model is the Queue::before event. This means that the JobStatus won't have a job_id until it is being processed for the first time.
+The first Laravel event that can be captured to insert the job_id into the JobStatus model is the `Queue::before` event. This means that the JobStatus won't have a job_id until it is being processed for the first time.
 
 If you would like the job_id to be stored immediately you can add the `LaravelJobStatusServiceProvider` to your `config/app.php`, which tells laravel to use our `Dispatcher`.
 ```php
@@ -55,7 +55,7 @@ If you would like the job_id to be stored immediately you can add the `LaravelJo
 
 #### 6. Setup dedicated database connection (optional)
 
-Laravel support only one transcation per database connection.
+Laravel support only one transaction per database connection.
 
 All changes made by JobStatus are also within transaction and therefore invisible to other connnections (e.g. progress page)
 
