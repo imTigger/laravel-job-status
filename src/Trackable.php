@@ -4,7 +4,7 @@ namespace Imtigger\LaravelJobStatus;
 
 trait Trackable
 {
-    /** @var int $statusId */
+    /** @var int */
     protected $statusId;
     protected $progressNow = 0;
     protected $progressMax = 0;
@@ -42,7 +42,7 @@ trait Trackable
 
     protected function update(array $data)
     {
-        /** @var JobStatusUpdater $updater */
+        /** @var JobStatusUpdater */
         $updater = app(JobStatusUpdater::class);
         $updater->update($this, $data);
     }
@@ -53,11 +53,11 @@ trait Trackable
             return;
         }
 
-        /** @var JobStatus $entityClass */
+        /** @var JobStatus */
         $entityClass = app(config('job-status.model'));
 
         $data = array_merge(['type' => $this->getDisplayName()], $data);
-        /** @var JobStatus $status */
+        /** @var JobStatus */
         $status = $entityClass::query()->create($data);
 
         $this->statusId = $status->getKey();
