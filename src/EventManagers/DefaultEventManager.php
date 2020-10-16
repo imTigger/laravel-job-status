@@ -22,16 +22,18 @@ class DefaultEventManager extends EventManager
 
     public function after(JobProcessed $event): void
     {
-        $this->getUpdater()->update($event, [
-            'status' => $this->getEntity()::STATUS_FINISHED,
-            'finished_at' => Carbon::now(),
-        ]);
+        if (!$event->job->hasFailed()) {
+            $this->getUpdater()->update($event, [
+                'status' => $this->getEntity()::STATUS_FINISHED,
+                'finished_at' => Carbon::now(),
+            ]);
+        }
     }
 
     public function failing(JobFailed $event): void
     {
         $this->getUpdater()->update($event, [
-            'status' => $this->getEntity()::STATUS_FAILED,
+            'status' => ($event->job->attempts() !== $event->job->maxTries()) ? $this->getEntity()::STATUS_FAILED : $this->getEntity()::STATUS_RETRYING,
             'finished_at' => Carbon::now(),
         ]);
     }
@@ -39,8 +41,6 @@ class DefaultEventManager extends EventManager
     public function exceptionOccurred(JobExceptionOccurred $event): void
     {
         $this->getUpdater()->update($event, [
-            'status' => ($event->job->attempts() === $event->job->maxTries()) ? $this->getEntity()::STATUS_FAILED : $this->getEntity()::STATUS_RETRYING,
-            'finished_at' => Carbon::now(),
             'output' => ['message' => $event->exception->getMessage()],
         ]);
     }
