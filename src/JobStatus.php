@@ -49,7 +49,10 @@ class JobStatus extends Model
     const STATUS_FAILED = 'failed';
     const STATUS_RETRYING = 'retrying';
 
+    protected $table = "job_statuses";
+
     public $dates = ['started_at', 'finished_at', 'created_at', 'updated_at'];
+
     protected $guarded = [];
 
     protected $casts = [
