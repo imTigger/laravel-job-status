@@ -43,7 +43,7 @@ class JobStatusUpdater
 
         if ($jobStatus->isFailed
             && isset($data['status'])
-            && $jobStatus::STATUS_FINISHED
+            && $data['status'] === $jobStatus::STATUS_FINISHED
         ) {
             unset($data['status']);
         }
