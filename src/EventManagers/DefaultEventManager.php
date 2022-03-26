@@ -41,7 +41,8 @@ class DefaultEventManager extends EventManager
     public function exceptionOccurred(JobExceptionOccurred $event): void
     {
         $this->getUpdater()->update($event, [
-            'output' => ['message' => $event->exception->getMessage()],
+            'status' => ($event->job->attempts() >= $event->job->maxTries()) ? $this->getEntity()::STATUS_FAILED : $this->getEntity()::STATUS_RETRYING,
+            'finished_at' => Carbon::now(),
         ]);
     }
 }
