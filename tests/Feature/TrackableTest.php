@@ -9,6 +9,7 @@ use Imtigger\LaravelJobStatus\LaravelJobStatusBusServiceProvider;
 use Imtigger\LaravelJobStatus\Tests\Data\TestJob;
 use Imtigger\LaravelJobStatus\Tests\Data\TestJobWithDatabase;
 use Imtigger\LaravelJobStatus\Tests\Data\TestJobWithException;
+use Imtigger\LaravelJobStatus\Tests\Data\TestJobWithFail;
 use Imtigger\LaravelJobStatus\Tests\Data\TestJobWithoutTracking;
 
 class TrackableTest extends TestCase
@@ -44,12 +45,29 @@ class TrackableTest extends TestCase
         ]);
     }
 
-    public function testStatusFailed()
+    public function testStatusFailedWithException()
     {
         $this->expectException(\Exception::class);
 
         /** @var TestJob $job */
         $job = new TestJobWithException();
+
+        app(Dispatcher::class)->dispatch($job);
+
+        Artisan::call('queue:work', [
+            '--once' => 1,
+        ]);
+
+        $this->assertDatabaseHas('job_statuses', [
+            'id' => $job->getJobStatusId(),
+            'status' => 'failed',
+        ]);
+    }
+
+    public function testStatusFailedWithFail()
+    {
+        /** @var TestJob $job */
+        $job = new TestJobWithFail();
 
         app(Dispatcher::class)->dispatch($job);
 
