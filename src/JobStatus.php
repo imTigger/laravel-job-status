@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $input
  * @property string $output
  * @property string $created_at
+ * @property string $updated_at
  * @property string $started_at
  * @property string $finished_at
  * @property mixed  $is_ended
