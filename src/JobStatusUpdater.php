@@ -67,7 +67,13 @@ class JobStatusUpdater
         try {
             $payload = $event->job->payload();
 
-            return unserialize($payload['data']['command']);
+            if (is_array($payload['data'])) {
+                if (array_key_exists('command', $payload['data'])) {
+                    return unserialize($payload['data']['command']);
+                }
+            }
+
+            return null;
         } catch (\Throwable $e) {
             Log::error($e->getMessage());
 
