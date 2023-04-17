@@ -58,7 +58,7 @@ trait Trackable
 
         $data = array_merge(['type' => $this->getDisplayName()], $data);
         /** @var JobStatus */
-        $status = $entityClass::query()->create($data);
+        $status = $entityClass::on(config('job-status.database_connection'))->create($data);
 
         $this->statusId = $status->getKey();
     }
